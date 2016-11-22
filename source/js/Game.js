@@ -1,6 +1,3 @@
-var VERSION = 1.0,
-    AUTHOR = "temechon@pixelcodr.com";
-
 // The function onload is loaded when the DOM has been loaded
 document.addEventListener("DOMContentLoaded", function () {
     new Game('renderCanvas');
@@ -89,6 +86,8 @@ Game.prototype = {
         skybox.material = shader;*/
         
         scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
+        scene.collisionsEnabled = true;
+        
         return scene;
     },
 

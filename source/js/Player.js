@@ -25,6 +25,8 @@ Player = function(game, spawnPoint) {
     
     this.walkSpeed = this.speed;
     this.sprintSpeed = 3*this.speed;
+    
+    this.enableJump = true;
     // The player inertia
     this.inertia = 0.8;
     // The player angular inertia
@@ -78,10 +80,18 @@ Player = function(game, spawnPoint) {
     window.addEventListener("keyup", function(evt) {
         _this.handleKeyUp(evt.keyCode);
     });
+    
+    
+     this.setEnableJump = function(){
+         _this.enableJump = true;
+     },
+     
+     this.setDisableJump = function(){
+         _this.enableJump = false;
+     }
 };
 
 Player.prototype = {
-
     _initPointerLock : function() {
         var _this = this;
         // Request pointer lock
@@ -117,7 +127,7 @@ Player.prototype = {
 
         var cam = new BABYLON.FreeCamera("camera", this.spawnPoint, this.scene);
         cam.attachControl(this.scene.getEngine().getRenderingCanvas());
-        cam.ellipsoid = new BABYLON.Vector3(2, this.height, 2);
+        cam.ellipsoid = new BABYLON.Vector3(1, this.height, 1);
         cam.checkCollisions = true;
         cam.applyGravity = true;
         // WASD
@@ -182,8 +192,12 @@ Player.prototype = {
      **/
      
      jump : function(){
+ 		if(this.enableJump == false){
+ 		    return;
+ 		}
+ 		
  		var cam = this.camera;
-
+        
 		cam.animations = [];
 		
 		var a = new BABYLON.Animation(
@@ -202,9 +216,13 @@ Player.prototype = {
 		var easingFunction = new BABYLON.CircleEase();
 		easingFunction.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
 		a.setEasingFunction(easingFunction);
+
 		
 		cam.animations.push(a);
 		
-		scene.beginAnimation(cam, 0, 20, false);
-     }
+		this.setDisableJump();
+		scene.beginAnimation(cam, 0, 20, false, 1, this.setEnableJump);
+     },
+     
+
 };
