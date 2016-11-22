@@ -6,9 +6,11 @@
  * @constructor
  */
 Player = function(game, spawnPoint) {
-
+    // The player eyes height
+    this.height = 1;
+    
     if (!spawnPoint) {
-        spawnPoint = new BABYLON.Vector3(0,10,-10);
+        spawnPoint = new BABYLON.Vector3(0, 2*this.height, -10);
     }
 
     // The player spawnPoint
@@ -17,8 +19,7 @@ Player = function(game, spawnPoint) {
     this.scene = game.scene;
     // The game
     this.game = game;
-    // The player eyes height
-    this.height = 2;
+
     // The player speed
     this.speed = 3;
     
@@ -138,10 +139,15 @@ Player.prototype = {
      * @param keycode
      */
     handleKeyDown : function(keycode) {
+        console.log(keycode);
         switch (keycode) {
-            case 16:{
-                console.log("Start sprint...");
+            case 16:{//Shift
                 this.camera.speed = this.sprintSpeed;
+                break;
+            }
+            case 32:{//space
+                this.jump();
+                break;
             }
         }
     },
@@ -152,9 +158,9 @@ Player.prototype = {
      */
     handleKeyUp : function(keycode) {
         switch (keycode) {
-            case 16:{
-                console.log("Stop sprint...");
+            case 16:{//Shift
                 this.camera.speed = this.walkSpeed;
+                break;
             }
         }
     },
@@ -167,6 +173,38 @@ Player.prototype = {
      */
     handleUserMouse : function(evt, pickInfo) {
         this.weapon.fire(pickInfo);
-    }
+    },
+    
+    
+    /**
+     * Make the player jump
+     * 
+     **/
+     
+     jump : function(){
+ 		var cam = this.camera;
 
+		cam.animations = [];
+		
+		var a = new BABYLON.Animation(
+		    "a",
+		    "position.y", 20,
+		    BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+		    BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+		
+		// Animation keys
+		var keys = [];
+		keys.push({ frame: 0, value: cam.position.y });
+		keys.push({ frame: 10, value: cam.position.y + 2 });
+		keys.push({ frame: 20, value: cam.position.y });
+		a.setKeys(keys);
+		
+		var easingFunction = new BABYLON.CircleEase();
+		easingFunction.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
+		a.setEasingFunction(easingFunction);
+		
+		cam.animations.push(a);
+		
+		scene.beginAnimation(cam, 0, 20, false);
+     }
 };

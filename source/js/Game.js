@@ -87,7 +87,8 @@ Game.prototype = {
         shader.setColor3("bottomColor", BABYLON.Color3.FromInts(240,240, 255));
         shader.backFaceCulling = false;
         skybox.material = shader;*/
-
+        
+        scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
         return scene;
     },
 
