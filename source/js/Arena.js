@@ -11,11 +11,19 @@ Arena = function(game) {
 
     // The ground
     var ground = BABYLON.Mesh.CreateGround("ground",  this.size,  this.size, 2, this.game.scene);
-//    var ground = BABYLON.Mesh.CreateBox("ground",  this.size, scene);
-//    ground.position.y = -50;
+    //var ground = BABYLON.Mesh.CreateBox("ground",  this.size, scene);
+    //    ground.position.y = -50;
     this._deactivateSpecular(ground);
     ground.checkCollisions = true;
-
+    
+    
+    /*var groundMat = new BABYLON.StandardMaterial("ground", scene);
+    var groundTex = new BABYLON.Texture("assets/ground.jpg", scene);
+    groundTex.uScale = 10;
+    groundTex.vScale = 10;
+    groundMat.diffuseTexture = groundTex;    
+    ground.material = groundMat;*/
+    
     var _this = this;
     setInterval(function() {
         var posX = _this._randomNumber(-_this.size/2, _this.size/2);
@@ -69,8 +77,15 @@ Arena.prototype = {
     },
 
     _deactivateSpecular : function(mesh) {
+        var groundMat = new BABYLON.StandardMaterial(mesh.name+"mat", this.game.scene);
+        
+        var groundTex = new BABYLON.Texture("assets/ground.jpg", scene);
+        groundTex.uScale = 10;
+        groundTex.vScale = 10;
+        groundMat.diffuseTexture = groundTex;
+        
         if (!mesh.material) {
-            mesh.material = new BABYLON.StandardMaterial(mesh.name+"mat", this.game.scene);
+            mesh.material = groundMat;
         }
         mesh.material.specularColor = BABYLON.Color3.Black();
     }

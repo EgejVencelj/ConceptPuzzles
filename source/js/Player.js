@@ -214,7 +214,7 @@ Player.prototype = {
 		a.setKeys(keys);
 		
 		var easingFunction = new BABYLON.CircleEase();
-		easingFunction.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
+		easingFunction.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEIOUT);
 		a.setEasingFunction(easingFunction);
 
 		
