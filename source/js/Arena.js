@@ -18,16 +18,17 @@ Arena = function(game) {
     ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, move:false});
     
     
-    var _this = this;
+    /*var _this = this;
     setInterval(function() {
         var posX = _this._randomNumber(-_this.size/2, _this.size/2);
         var posZ = _this._randomNumber(-_this.size/2, _this.size/2);
         //var t = new Target(_this.game, posX, posZ);
-    }, 1000);
+    }, 1000);*/
 
     new Box(new BABYLON.Vector3(0, 1, 0), true);
     new Box(new BABYLON.Vector3(0, 3, 0), true);
     new Box(new BABYLON.Vector3(0, 5, 0), true);
+    
 };
 
 

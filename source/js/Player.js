@@ -131,6 +131,8 @@ Player.prototype = {
         camera.collisionRadius = new BABYLON.Vector3(0.5, 0.5, 0.5)
         camera.checkCollisions = true;
         camera.applyGravity = true;
+        
+        
         //.setPhysicsState({impostor:BABYLON.PhysicsEngine.SphereImpostor, move:true});
         // WASD
         camera.keysUp = [87]; // Z -> W

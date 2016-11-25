@@ -88,7 +88,7 @@ Game.prototype = {
         shader.backFaceCulling = false;
         skybox.material = shader;*/
         
-        scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
+        scene.gravity = new BABYLON.Vector3(0, -0.05, 0);
         var physicsPlugin = new BABYLON.OimoJSPlugin();
         scene.enablePhysics(scene.gravity, physicsPlugin);
         
