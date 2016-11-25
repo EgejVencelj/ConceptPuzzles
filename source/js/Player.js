@@ -10,7 +10,7 @@ Player = function(game, spawnPoint) {
     this.height = 1;
     
     if (!spawnPoint) {
-        spawnPoint = new BABYLON.Vector3(0, 20*this.height, -10);
+        spawnPoint = new BABYLON.Vector3(0, 2*this.height, -10);
     }
 
     // The player spawnPoint
@@ -141,7 +141,7 @@ Player.prototype = {
         camera.inertia = this.inertia;
         camera.angularInertia = this.angularInertia;
         camera.angularSensibility = this.angularSensibility;
-        camera.layerMask = 2;
+        //camera.layerMask = 2;
 
         return camera;
     },

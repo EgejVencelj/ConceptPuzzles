@@ -15,7 +15,7 @@ Arena = function(game) {
     //    ground.position.y = -50;
     this._deactivateSpecular(ground);
     ground.checkCollisions = true;
-    ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.PlaneImpostor, move:false});
+    ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.BoxImpostor, move:false});
     
     
     var _this = this;
