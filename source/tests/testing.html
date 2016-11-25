@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <script>
+
+
+        class ManagedElement{
+
+            constructor(scene, a) {
+                Object.assign(this,a); //ha
+            }
+
+            //refereces for change propagation tree
+            get outputs(){
+                if(this.output instanceof Array){
+                    return this.outputs;
+                } else if (this.outputs == null){
+                    this.output = [this.output];
+                    return [this.outputs];
+                } else {
+                    return null;
+                }
+            }
+
+
+            //update data in object tree
+            _updateObjectState(){
+
+                for(o of this.outputs){
+                    if(o.onUpdateObjectState != null){
+                        o.onUpdateObjectState();
+                        if(o._updateObjectState != null {
+                            o._updateObjectState();
+                        }
+                    }
+                }
+            }
+
+            //update pass for associated babylon tree; updates
+            _updateBabylonState(){
+                for(o of this.outputs){
+                    if(o.onUpdateBabylonState != null){
+                        o.onUpdateBabylonState();
+                    }
+                }
+            }
+        }
+
+        class CircuitElement extends ManagedElement {
+            //0-off, 1-on, 2-disconnected
+            get status() {
+                if (this.status == null || this.status != 0 || this.status != 1) {
+                    return 2;
+                } else {
+                    return this.status;
+                }
+            }
+        }
+
+
+        class Switch extends CircuitElement{
+            onUpdateObjectState(){}
+        }
+
+        class Wire extends CircuitElement{
+
+        }
+
+        class Light extends CircuitElement{
+
+        }
+
+
+        function initPuzzles(scene){
+
+
+            var switch1 = {
+                type: "switch",
+                position:BABYLON.Vector3(0, 0, 0),
+            };
+
+            var wire1 = {
+                type:"wire",
+                position:[BABYLON.Vector3(0, 0, 0), BABYLON.Vector3(0, 0, 0)],
+                input:switch1,
+            };
+            switch1.output = switch1;
+
+            var light1 = {
+                type:"light",
+                position:[BABYLON.Vector3(0, 0, 0), BABYLON.Vector3(0, 0, 0)],
+                input:wire1
+            };
+            wire1.output = wire1;
+
+
+
+            var box = BABYLON.Mesh.CreateBox("box", 1.0, scene);
+            box.position = new BABYLON.Vector3(0, 3, 0);
+
+            var box = BABYLON.Mesh.CreateBox("box", 1.0, scene);
+            box.position = new BABYLON.Vector3(0, 5, 0);
+
+        }
+
+
+
+        function _changeState(element, state){
+            if((element.state == null || element.state != state) && element.onChangeState != null){
+                element.state = state;
+                element.onChangeState(element);
+            }
+            element.state = state;
+        };
+
+
+        function updateOutputs(element){
+            let output = element.output;
+            if(output instanceof Array){
+                for (e of output){
+                    evaluateElement(e);
+                }
+            } else if (output != null) {
+                evaluateElement(output);
+            }
+        }
+
+
+        function updateState(element){
+            switch(element.type){
+                case "light":
+                    _updateLightState(element);
+                    return
+                case ""
+            }
+
+        }
+
+
+        function _updateLightState(element){
+
+        }
+
+
+    </script>
+
+</head>
+<body>
+
+</body>
+</html>

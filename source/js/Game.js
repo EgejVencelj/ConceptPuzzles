@@ -87,7 +87,9 @@ Game.prototype = {
         
         scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
         scene.collisionsEnabled = true;
-        
+
+        initPuzzles(scene);
+
         return scene;
     },
 
@@ -144,3 +146,5 @@ var axis = function(scene, size) {
         z.position = new BABYLON.Vector3(0, 0, size/2);
         z.rotation.x = Math.PI / 2;
 };
+
+

@@ -44,6 +44,6 @@ function initScene() {
  * Initialize the game
  */
 function initGame() {
-    
+
 }
 
