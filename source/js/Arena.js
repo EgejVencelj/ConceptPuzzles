@@ -10,19 +10,13 @@ Arena = function(game) {
     this.size = 100;
 
     // The ground
-    var ground = BABYLON.Mesh.CreateGround("ground",  this.size,  this.size, 2, this.game.scene);
+    var ground = BABYLON.Mesh.CreateGround("ground",  this.size,  this.size, 2, scene);
     //var ground = BABYLON.Mesh.CreateBox("ground",  this.size, scene);
     //    ground.position.y = -50;
     this._deactivateSpecular(ground);
     ground.checkCollisions = true;
+    ground.setPhysicsState({ impostor: BABYLON.PhysicsEngine.PlaneImpostor, move:false});
     
-    
-    /*var groundMat = new BABYLON.StandardMaterial("ground", scene);
-    var groundTex = new BABYLON.Texture("assets/ground.jpg", scene);
-    groundTex.uScale = 10;
-    groundTex.vScale = 10;
-    groundMat.diffuseTexture = groundTex;    
-    ground.material = groundMat;*/
     
     var _this = this;
     setInterval(function() {
@@ -31,31 +25,9 @@ Arena = function(game) {
         //var t = new Target(_this.game, posX, posZ);
     }, 1000);
 
-    // Minimap
-    /*var mm = new BABYLON.FreeCamera("minimap", new BABYLON.Vector3(0,100,0), this.game.scene);
-    mm.layerMask = 1;
-    mm.setTarget(new BABYLON.Vector3(0.1,0.1,0.1));
-    mm.mode = BABYLON.Camera.ORTHOGRAPHIC_CAMERA;
-
-    mm.orthoLeft = -this.size/2;
-    mm.orthoRight = this.size/2;
-    mm.orthoTop =  this.size/2;
-    mm.orthoBottom = -this.size/2;
-
-    mm.rotation.x = Math.PI/2;
-
-    var xstart = 0.8,
-        ystart = 0.75;
-    var width = 0.99-xstart,
-        height = 1-ystart;
-
-    mm.viewport = new BABYLON.Viewport(
-        xstart,
-        ystart,
-        width,
-        height
-    );
-    this.game.scene.activeCameras.push(mm);*/
+    new Box(new BABYLON.Vector3(0, 1, 0), true);
+    new Box(new BABYLON.Vector3(0, 3, 0), true);
+    new Box(new BABYLON.Vector3(0, 5, 0), true);
 };
 
 
@@ -77,7 +49,7 @@ Arena.prototype = {
     },
 
     _deactivateSpecular : function(mesh) {
-        var groundMat = new BABYLON.StandardMaterial(mesh.name+"mat", this.game.scene);
+        var groundMat = new BABYLON.StandardMaterial(mesh.name+"mat", scene);
         
         var groundTex = new BABYLON.Texture("assets/ground.jpg", scene);
         groundTex.uScale = 10;

@@ -10,7 +10,7 @@ Player = function(game, spawnPoint) {
     this.height = 1;
     
     if (!spawnPoint) {
-        spawnPoint = new BABYLON.Vector3(0, 2*this.height, -10);
+        spawnPoint = new BABYLON.Vector3(0, 20*this.height, -10);
     }
 
     // The player spawnPoint
@@ -41,7 +41,7 @@ Player = function(game, spawnPoint) {
     //this.weapon = new Weapon(game, this);
     var _this = this;
 
-    var canvas = this.scene.getEngine().getRenderingCanvas();
+    var canvas = engine.getRenderingCanvas();
     // Event listener on click on the canvas
     /*canvas.addEventListener("click", function(evt) {
         var width = _this.scene.getEngine().getRenderWidth();
@@ -71,8 +71,8 @@ Player = function(game, spawnPoint) {
     s.layerMask = 1;*/
 
     // Set the active camera for the minimap
-    this.scene.activeCameras.push(this.camera);
-    this.scene.activeCamera = this.camera;
+    scene.activeCameras.push(this.camera);
+    scene.activeCamera = this.camera;
 
     window.addEventListener("keydown", function(evt) {
         _this.handleKeyDown(evt.keyCode);
@@ -95,7 +95,7 @@ Player.prototype = {
     _initPointerLock : function() {
         var _this = this;
         // Request pointer lock
-        var canvas = this.scene.getEngine().getRenderingCanvas();
+        var canvas = engine.getRenderingCanvas();
         canvas.addEventListener("click", function(evt) {
             canvas.requestPointerLock = canvas.requestPointerLock || canvas.msRequestPointerLock || canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock;
             if (canvas.requestPointerLock) {
@@ -125,23 +125,25 @@ Player.prototype = {
      */
     _initCamera : function() {
 
-        var cam = new BABYLON.FreeCamera("camera", this.spawnPoint, this.scene);
-        cam.attachControl(this.scene.getEngine().getRenderingCanvas());
-        cam.ellipsoid = new BABYLON.Vector3(1, this.height, 1);
-        cam.checkCollisions = true;
-        cam.applyGravity = true;
+        var camera = new BABYLON.FreeCamera("camera", this.spawnPoint, scene);
+        camera.attachControl(scene.getEngine().getRenderingCanvas());
+        camera.ellipsoid = new BABYLON.Vector3(1, this.height, 1);
+        camera.collisionRadius = new BABYLON.Vector3(0.5, 0.5, 0.5)
+        camera.checkCollisions = true;
+        camera.applyGravity = true;
+        //.setPhysicsState({impostor:BABYLON.PhysicsEngine.SphereImpostor, move:true});
         // WASD
-        cam.keysUp = [87]; // Z -> W
-        cam.keysDown = [83]; // S
-        cam.keysLeft = [65]; // Q -> A
-        cam.keysRight = [68]; // D
-        cam.speed = this.speed;
-        cam.inertia = this.inertia;
-        cam.angularInertia = this.angularInertia;
-        cam.angularSensibility = this.angularSensibility;
-        cam.layerMask = 2;
+        camera.keysUp = [87]; // Z -> W
+        camera.keysDown = [83]; // S
+        camera.keysLeft = [65]; // Q -> A
+        camera.keysRight = [68]; // D
+        camera.speed = this.speed;
+        camera.inertia = this.inertia;
+        camera.angularInertia = this.angularInertia;
+        camera.angularSensibility = this.angularSensibility;
+        camera.layerMask = 2;
 
-        return cam;
+        return camera;
     },
 
     /**

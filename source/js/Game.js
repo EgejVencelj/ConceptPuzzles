@@ -1,3 +1,6 @@
+// Global variables
+var canvas, engine, scene, camera;
+
 // The function onload is loaded when the DOM has been loaded
 document.addEventListener("DOMContentLoaded", function () {
     new Game('renderCanvas');
@@ -6,10 +9,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 Game = function(canvasId) {
 
-    var canvas = document.getElementById(canvasId);
-    var engine = new BABYLON.Engine(canvas, true);
+    canvas = document.getElementById(canvasId);
+    engine = new BABYLON.Engine(canvas, true);
 
-    this.scene = this._initScene(engine);
+    scene = this._initScene(engine);
 
     var _this = this;
     this.loader =  new BABYLON.AssetsManager(this.scene);
@@ -29,7 +32,7 @@ Game = function(canvasId) {
         var arena = new Arena(_this);
 
         engine.runRenderLoop(function () {
-            _this.scene.render();
+            scene.render();
         });
 
         window.addEventListener("keyup", function(evt) {
@@ -62,7 +65,7 @@ Game.prototype = {
 //        camera.maxZ = 1000;
 //        camera.attachControl(engine.getRenderingCanvas());
 //
-        axis(scene, 5);
+        //axis(scene, 5);
 
 
         // Update the scene background color
@@ -86,9 +89,10 @@ Game.prototype = {
         skybox.material = shader;*/
         
         scene.gravity = new BABYLON.Vector3(0, -9.81, 0);
+        var physicsPlugin = new BABYLON.OimoJSPlugin();
+        scene.enablePhysics(scene.gravity, physicsPlugin);
+        
         scene.collisionsEnabled = true;
-
-        initPuzzles(scene);
 
         return scene;
     },
