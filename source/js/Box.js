@@ -5,10 +5,12 @@ Box = function(spawnPoint, physics){
     
     this.mesh = BABYLON.Mesh.CreateBox("box", 1.0, scene);
     this.mesh.position = spawnPoint;
-
+    
+    
     if(physics){
         this.mesh.applyGravity = true;
-        this.mesh.setPhysicsState({impostor:BABYLON.PhysicsEngine.BoxImpostor, move:true, mass:1, friction:0.5, restitution:0.1});
+        this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(this.mesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, restitution: 0.9}, scene);
+        this.mesh.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(3,1,0,0));
     }
     
     // Check collisions
