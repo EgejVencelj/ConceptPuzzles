@@ -1,63 +1,49 @@
-// Global variables
 var canvas, engine, scene, camera;
 
-// The function onload is loaded when the DOM has been loaded
-document.addEventListener("DOMContentLoaded", function () {
-    new Game('renderCanvas');
-}, false);
+class Game{
+    constructor(canvasId){
+        canvas = document.getElementById(canvasId);
+        engine = new BABYLON.Engine(canvas, true);
 
+        scene = this._initScene(engine);
 
-Game = function(canvasId) {
+        var _this = this;
+        this.loader =  new BABYLON.AssetsManager(this.scene);
 
-    canvas = document.getElementById(canvasId);
-    engine = new BABYLON.Engine(canvas, true);
+        // An array containing the loaded assets
+        this.assets = {};
 
-    scene = this._initScene(engine);
+        /*var meshTask = this.loader.addMeshTask("gun", "", "./assets/", "gun.babylon");
+         meshTask.onSuccess = function(task) {
+         _this._initMesh(task);
+         };*/
 
-    var _this = this;
-    this.loader =  new BABYLON.AssetsManager(this.scene);
+        this.loader.onFinish = function (tasks) {
 
-    // An array containing the loaded assets
-    this.assets = {};
+            // Player and arena creation when the loading is finished
+            var player = new Player(_this);
+            var arena = new Arena(_this);
 
-    /*var meshTask = this.loader.addMeshTask("gun", "", "./assets/", "gun.babylon");
-    meshTask.onSuccess = function(task) {
-        _this._initMesh(task);
-    };*/
+            engine.runRenderLoop(function () {
+                scene.render();
+            });
 
-    this.loader.onFinish = function (tasks) {
+            window.addEventListener("keyup", function(evt) {
+                _this.handleUserInput(evt.keyCode);
+            });
+        };
 
-        // Player and arena creation when the loading is finished
-        var player = new Player(_this);
-        var arena = new Arena(_this);
+        this.loader.load();
 
-        engine.runRenderLoop(function () {
-            scene.render();
-        });
+        // Resize the babylon engine when the window is resized
+        window.addEventListener("resize", function () {
+            if (engine) {
+                engine.resize();
+            }
+        },false);
+    }
 
-        window.addEventListener("keyup", function(evt) {
-            _this.handleUserInput(evt.keyCode);
-        });
-    };
-
-    this.loader.load();
-
-    // Resize the babylon engine when the window is resized
-    window.addEventListener("resize", function () {
-        if (engine) {
-            engine.resize();
-        }
-    },false);
-
-};
-
-
-Game.prototype = {
-    /**
-     * Init the environment of the game / skybox, camera, ...
-     */
-    _initScene : function(engine) {
-
+    _initScene(engine) {
         var scene = new BABYLON.Scene(engine);
 
         // Camera attached to the canvas
@@ -76,60 +62,45 @@ Game.prototype = {
 
         // Skydome
         /*var skybox = BABYLON.Mesh.CreateSphere("skyBox", 50, 1000, scene);
-        skybox.layerMask = 2;
+         skybox.layerMask = 2;
 
-        // The sky creation
-        BABYLON.Engine.ShadersRepository = "shaders/";
+         // The sky creation
+         BABYLON.Engine.ShadersRepository = "shaders/";
 
-        var shader = new BABYLON.ShaderMaterial("gradient", scene, "gradient", {});
-        shader.setFloat("offset", 200);
-        shader.setColor3("topColor", BABYLON.Color3.FromInts(0,119,255));
-        shader.setColor3("bottomColor", BABYLON.Color3.FromInts(240,240, 255));
-        shader.backFaceCulling = false;
-        skybox.material = shader;*/
-        
+         var shader = new BABYLON.ShaderMaterial("gradient", scene, "gradient", {});
+         shader.setFloat("offset", 200);
+         shader.setColor3("topColor", BABYLON.Color3.FromInts(0,119,255));
+         shader.setColor3("bottomColor", BABYLON.Color3.FromInts(240,240, 255));
+         shader.backFaceCulling = false;
+         skybox.material = shader;*/
+
         scene.gravity = new BABYLON.Vector3(0, -0.05, 0);
         var physicsPlugin = new BABYLON.OimoJSPlugin();
         scene.enablePhysics(scene.gravity, physicsPlugin);
-        
+
         scene.collisionsEnabled = true;
 
         return scene;
-    },
+    }
 
-
-    /**
-     * Handle user keyboard inputs
-     * @param keycode
-     */
-    handleUserInput : function(keycode) {
+    handleUserInput(keycode) {
         console.log(keycode);
         switch (keycode) {
-            // user inputs
-        }
-    },
 
-    /**
-     * Initialize a mesh once it has been loaded. Store it in the asset array and set it not visible.
-     * @param task
-     * @private
-     */
-    _initMesh : function(task) {
+        }
+    }
+
+    _initMesh(task) {
         this.assets[task.name] = task.loadedMeshes;
         for (var i=0; i<task.loadedMeshes.length; i++ ){
             var mesh = task.loadedMeshes[i];
             mesh.isVisible = false;
         }
     }
-};
+}
 
-
-/**
- * Draw axis on the scene
- * @param scene The scene where the axis will be displayed
- * @param size The size of each axis.
- */
-var axis = function(scene, size) {
+class axis {
+    constructor(scene, size){
         //X axis
         var x = BABYLON.Mesh.CreateCylinder("x", size, 0.1, 0.1, 6, scene, false);
         x.material = new BABYLON.StandardMaterial("xColor", scene);
@@ -149,6 +120,7 @@ var axis = function(scene, size) {
         z.material.diffuseColor = new BABYLON.Color3(0, 0, 1);
         z.position = new BABYLON.Vector3(0, 0, size/2);
         z.rotation.x = Math.PI / 2;
-};
+    }
+}
 
 

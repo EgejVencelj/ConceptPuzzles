@@ -4,38 +4,18 @@
         <script src="js/oimo.min.js"></script>
         <script src="js/babylon.js"></script>
         <script src="js/babylon.js"></script>
-        <!-- <script src="js/initScene.js"></script> -->
         <script src="js/Box.js"></script>
         <script src="js/Arena.js"></script>
         <script src="js/Player.js"></script>
         <script src="js/Game.js"></script>
-    <script>
-
-        class LogicElement{
-
-
-        }
-
-        function initPuzzles(scene){
-            var circuits = [];
-            //circuits.
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                new Game('renderCanvas');
+            }, false);
+        </script>
 
 
 
-            //var box = BABYLON.Mesh.CreateBox("box", 1.0, scene);
-            //box.position = new BABYLON.Vector3(0, 0, 0);
-            
-            //new Box(new BABYLON.Vector3(0, 1, 0), false);
-
-            //var box = BABYLON.Mesh.CreateBox("box", 1.0, scene);
-            //box.position = new BABYLON.Vector3(0, 3, 0);
-
-            //var box = BABYLON.Mesh.CreateBox("box", 1.0, scene);
-            //box.position = new BABYLON.Vector3(0, 5, 0);
-
-        }
-
-    </script>
     <div id="lcContainer">
         <ul id="listColliders">
         </ul>
