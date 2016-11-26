@@ -6,11 +6,11 @@ class Box{
         this.mesh.position = spawnPoint;
 
 
-        /*if(physics){
+        if(physics){
             this.mesh.applyGravity = true;
             this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(this.mesh, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, restitution: 0.9}, scene);
             this.mesh.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(3,1,0,0));
-        }*/
+        }
 
         // Check collisions
         this.checkCollisions = true;
