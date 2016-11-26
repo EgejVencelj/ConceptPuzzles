@@ -5,22 +5,31 @@ var switchA;
 function initPuzzles(scene){
    let switch1 = new Switch({
         scene,
-        position:BABYLON.Vector3(0, 0, 0)
+        position:new BABYLON.Vector3(5, 0, 0)
     });
 
-    let wire1 = new Wire({
-        scene,
-        position:[BABYLON.Vector3(0, 0, 0), BABYLON.Vector3(0, 0, 0)],
-        input:switch1
-    });
-    switch1.output = wire1;
+   switch1.chain(
+       new Wire({scene,
+       position:[new BABYLON.Vector3(5, 0, 0), new BABYLON.Vector3(7, 0, 1)],
+       input:switch1})
+   ).chain(
+       new Light({
+       scene,
+       position:new BABYLON.Vector3(7, 0, 1)})
+   );
 
-    let light1 = new Light({
-        scene,
-        position:BABYLON.Vector3(0, 0, 0),
-        input:wire1
-    });
-    wire1.output = light1;
+    switch1.chain(
+        new Wire({scene,
+            position:[new BABYLON.Vector3(5, 0, 0), new BABYLON.Vector3(8, 0, -2)],
+            input:switch1})
+    ).chain(
+        new Light({
+            scene,
+            position:new BABYLON.Vector3(8, 0, -2)})
+    );
+
+
+
     
 
     switchA = switch1;

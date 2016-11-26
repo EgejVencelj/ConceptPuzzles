@@ -7,6 +7,8 @@ class Game{
 
         scene = this._initScene(engine);
 
+        initGraphConstants();
+
         this.loader =  new BABYLON.AssetsManager(scene);
 
         // An array containing the loaded assets

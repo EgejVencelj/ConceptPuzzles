@@ -1,13 +1,63 @@
 "use strict";
+
+let standardBaseMaterial;
+
+let wireOnMaterial, wireOffMaterial, wireDisMaterial;
+let lightBulbColor, lightBulbOnMaterial, lightBulbOffMaterial, lightBulbBurnerOnMaterial, lightBulbBurnerOffMaterial;
+
+
+function initGraphConstants(){
+    standardBaseMaterial = new BABYLON.StandardMaterial("", scene);
+    standardBaseMaterial.diffuseColor = rgb(100, 27, 27);
+
+
+    wireOnMaterial = new BABYLON.StandardMaterial("", scene);
+    wireOnMaterial.diffuseColor = rgb(17, 108, 255);
+    wireOffMaterial=new BABYLON.StandardMaterial("", scene)
+    wireOffMaterial.diffuseColor =rgb(4, 50, 124);
+    wireDisMaterial=new BABYLON.StandardMaterial("", scene)
+    wireDisMaterial.diffuseColor = rgb(40, 40, 40);
+
+    lightBulbColor = rgb(254, 255, 214)
+
+    lightBulbOnMaterial = new BABYLON.StandardMaterial("", scene);
+    lightBulbOnMaterial.diffuseColor = lightBulbColor;
+    lightBulbOnMaterial.emissiveColor = lightBulbColor;
+    lightBulbOnMaterial.alpha = 0.95;
+    lightBulbBurnerOnMaterial = new BABYLON.StandardMaterial("", scene);
+    lightBulbBurnerOnMaterial.diffuseColor = lightBulbColor;
+    lightBulbBurnerOnMaterial.emissiveColor = lightBulbColor;
+
+    lightBulbOffMaterial = new BABYLON.StandardMaterial("", scene);
+    lightBulbOffMaterial.diffuseColor = rgb(132, 132, 132);
+    lightBulbOffMaterial.alpha = 0.5;
+    lightBulbBurnerOffMaterial = new BABYLON.StandardMaterial("", scene);
+    lightBulbBurnerOffMaterial.diffuseColor = rgb(186, 186, 186);
+
+}
+
+
 class ManagedElement{
 
     constructor(a) {
+        this.output = [];
         Object.assign(this,a); //ha
     }
 
     update(){
         this.updateObjectModel();
         this.updateObjectView();
+    }
+
+
+    chain(element, inputSlot=null){
+        this.output.push(element);
+        if(inputSlot != null){
+            element[inputSlot]=this;
+        } else {
+            element.input=this;
+        }
+        return element;
     }
 
 
@@ -84,27 +134,19 @@ class Switch extends CircuitElement{
         if(this.hasChanged() || this.baseMesh == null){
             if(this.baseMesh == null){
                 //let baseMesh = BABYLON.Mesh.CreateBox("box", 1.0, scene);
-                let baseMesh = BABYLON.MeshBuilder.CreateBox("box", {
-                    height:0.1,
-                    //color:
-                }, scene);
+                let baseMesh = BABYLON.MeshBuilder.CreateBox("box", {height:0.1}, scene);
 
-                let m = new BABYLON.StandardMaterial("texture2", scene);
-                m.diffuseColor = rgb(100, 27, 27);
-
-
-                baseMesh.material = m;
-
-
-                baseMesh.position.x = 5;
+                baseMesh.material = standardBaseMaterial;
                 baseMesh.position.y = 0.05;
-
+                baseMesh.bakeCurrentTransformIntoVertices();
 
                 let switchMesh = BABYLON.MeshBuilder.CreateBox("box", {width:0.1, depth:0.1, height:0.7}, scene);
                 switchMesh.position.y = 0.35;
                 switchMesh.bakeCurrentTransformIntoVertices();
 
                 switchMesh.parent = baseMesh;
+
+                baseMesh.position = this.position;
 
                 this.baseMesh = baseMesh;
                 this.switchMesh = switchMesh
@@ -123,49 +165,40 @@ class Switch extends CircuitElement{
     }
 }
 
+
 class Wire extends CircuitElement{
-    flick(){
-        this.status = (~this.status)&1;
-    }
+
     onUpdateObjectModel(){
-        this.status = this.input;
+        this.status = this.input.status;
     }
     onUpdateObjectView(){
         if(this.hasChanged() || this.baseMesh == null){
             if(this.baseMesh == null){
-                //let baseMesh = BABYLON.Mesh.CreateBox("box", 1.0, scene);
-                let baseMesh = BABYLON.MeshBuilder.CreateBox("box", {
-                    height:0.1,
-                    //color:
-                }, scene);
 
-                let m = new BABYLON.StandardMaterial("texture2", scene);
-                m.diffuseColor = rgb(100, 27, 27);
+                let w = this.position[1].x - this.position[0].x;
+                let h = this.position[1].y - this.position[0].y;
+                let d = this.position[1].z - this.position[0].z;
 
+                let l = Math.sqrt(w*w+h*h+d*d);
 
-                baseMesh.material = m;
+                var c = BABYLON.Mesh.CreateCylinder("", l, 0.1, 0.1, 8, 1, scene, false);
+                c.position = new BABYLON.Vector3(l/2,0,0);
+                c.rotation.z = Math.PI / 2;
+                c.bakeCurrentTransformIntoVertices();
+                c.rotation.z = Math.atan2(h, Math.sqrt(w*w+d*d));
+                c.rotation.y = Math.atan2(-d, w);
+                c.position = this.position[0];
 
-
-                baseMesh.position.x = 5;
-                baseMesh.position.y = 0.05;
-
-
-                let switchMesh = BABYLON.MeshBuilder.CreateBox("box", {width:0.1, depth:0.1, height:0.7}, scene);
-                switchMesh.position.y = 0.35;
-                switchMesh.bakeCurrentTransformIntoVertices();
-
-                switchMesh.parent = baseMesh;
-
-                this.baseMesh = baseMesh;
-                this.switchMesh = switchMesh
+                this.baseMesh = c;
+                this.switchMesh = c
             }
 
             if(this.status === 0) {
-                this.switchMesh.rotation.z = Math.PI / 6;
+                this.baseMesh.material = wireOffMaterial;
             } else if(this.status === 1) {
-                this.switchMesh.rotation.z = -Math.PI/6;
+                this.baseMesh.material = wireOnMaterial;
             } else {
-                this.switchMesh.rotation.z = 0;
+                this.baseMesh.material = wireDisMaterial;
             }
 
         }
@@ -177,6 +210,58 @@ class Light extends CircuitElement{
         this.status = this.input.status;
     }
     onUpdateObjectView(){
+        if(this.hasChanged() || this.baseMesh == null){
+            if(this.baseMesh == null){
+                let baseMesh = BABYLON.MeshBuilder.CreateBox("box", {height:0.1}, scene);
+                baseMesh.material = standardBaseMaterial;
+                baseMesh.position.y = 0.05;
+                baseMesh.bakeCurrentTransformIntoVertices();
 
+
+                let bulb = BABYLON.Mesh.CreateSphere("", 10.0, 0.5, scene);
+                bulb.scaling.y=2;
+                bulb.material = lightBulbOnMaterial;
+                bulb.parent = baseMesh;
+
+                let bulbBurner = BABYLON.Mesh.CreateSphere("", 10.0, 0.3, scene);
+
+                bulbBurner.position.y = 0.1;
+                bulbBurner.material = lightBulbBurnerOnMaterial;
+                bulbBurner.parent = baseMesh;
+
+
+                let light = new BABYLON.PointLight("", new BABYLON.Vector3(0, 0, 0), scene);
+                light.diffuse = rgb(254, 255, 214);
+                light.specular = rgb(254, 255, 214);
+                light.position.y = 0.5;
+                light.parent = baseMesh;
+
+
+                baseMesh.position = this.position;
+
+                this.baseMesh = baseMesh;
+                this.bulbBurner = bulbBurner;
+                this.bulb = bulb;
+                this.light = light;
+
+            }
+
+            if(this.status === 0) {
+                this.light.setEnabled(false)
+                this.bulb.material = lightBulbOffMaterial;
+                this.bulbBurner.material = lightBulbBurnerOffMaterial;
+
+            } else if(this.status === 1) {
+                this.light.setEnabled(true);
+                this.bulb.material = lightBulbOnMaterial;
+                this.bulbBurner.material = lightBulbBurnerOnMaterial;
+            } else {
+                this.light.setEnabled(false)
+                this.bulb.material = lightBulbOffMaterial;
+                this.bulbBurner.material = lightBulbBurnerOffMaterial;
+            }
+
+
+        }
     }
 }
