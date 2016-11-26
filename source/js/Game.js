@@ -1,4 +1,4 @@
-var canvas, engine, scene, camera;
+var canvas, engine, scene, camera, assets;
 
 class Game{
     constructor(canvasId){
@@ -7,15 +7,18 @@ class Game{
 
         scene = this._initScene(engine);
 
-        this.loader =  new BABYLON.AssetsManager(this.scene);
+        this.loader =  new BABYLON.AssetsManager(scene);
 
         // An array containing the loaded assets
-        this.assets = {};
+        assets = {};
 
-        /*var meshTask = this.loader.addMeshTask("gun", "", "./assets/", "gun.babylon");
-         meshTask.onSuccess = function(task) {
-         this._initMesh(task);
-         };*/
+        var teapot = this.loader.addMeshTask("bane", "", "assets/", "teapot.obj");
+        teapot.onSuccess = function(e){
+            console.log("success!");
+        };
+        teapot.onError = function(e){
+            console.log("error!");
+        }
 
         this.loader.onFinish = function (tasks) {
 
