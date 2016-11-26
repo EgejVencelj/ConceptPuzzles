@@ -6,10 +6,126 @@
 
 
     <script>
+    "use strict";
+    var switchA;
+
+        class ManagedElement{
+
+            constructor(a) {
+                Object.assign(this,a); //ha
+            }
+
+            //fires object updating even on itself and on its children
+            updateObjectModel(){
+                if(this.onUpdateObjectModel != null) {
+                    this.onUpdateObjectModel();
+                }
+                for(let o of this._getOutputs()){
+                    if(o.updateObjectModel != null) {
+                        o.updateObjectModel();
+                    } else if(o.onUpdateObjectModel != null){
+                        o.onUpdateObjectModel();
+                    }
+                }
+            }
+
+            updateObjectView(){
+                if(this.onUpdateObjectView != null) {
+                    this.onUpdateObjectView();
+                }
+                for(let o of this._getOutputs()){
+                    if(o.updateObjectView != null) {
+                        o.updateObjectView();
+                    } else if(o.onUpdateObjectView != null){
+                        o.onUpdateObjectView();
+                    }
+                }
+            }
+
+            //refereces for change propagation tree
+            _getOutputs(){
+                if(this.output instanceof Array){
+                    return this.output;
+                } else if (this.output != null){
+                    this.output = [this.output];
+                    return this.output;
+                } else {
+                    return [];
+                }
+            }
+        }
+
+        class CircuitElement extends ManagedElement {
+            //0-off, 1-on, 2-disconnected
+            get status() {
+                if (this._status == null || (this._status != 0 && this._status != 1)) {
+                    return 2;
+                } else {
+                    return this._status;
+                }
+            }
+            set status(val){
+                this._status = val;
+            }
+
+            hasChanged(){
+                if(this._statusOld != status){
+                    this._statusOld = status;
+                    return true;
+                }
+                return false;
+            }
+        }
 
 
-        function initPuzzles(scene){
+        class Switch extends CircuitElement{
+            flick(){
+                return (~this.status)&1;
+            }
+            onUpdateObjectModel(){
 
+            }
+            onUpdateObjectView(){
+                if(this.hasChanged() || this.baseMesh == null){
+                    if(this.baseMesh == null){
+                        //let baseMesh = BABYLON.Mesh.CreateBox("box", 1.0, scene);
+                        //baseMesh.scale.y = 0.2;
+                        //let switchMesh = BABYLON.Mesh.CreateBox("box", 1.0, scene);
+                        //BABYLON.MeshBuilder.CreateBox()
+
+                        //this.baseMesh = baseMesh;
+
+
+                    }
+
+                }
+            }
+        }
+
+        class Wire extends CircuitElement{
+            onUpdateObjectModel(){
+                this.status = this.input.status;
+            }
+            onUpdateObjectView(){
+
+            }
+        }
+
+        class Light extends CircuitElement{
+            onUpdateObjectModel(){
+                this.status = this.input.status;
+                document.wrighgteln("huehalalal");
+                //1=3;
+            }
+            onUpdateObjectView(){
+
+            }
+        }
+
+
+
+
+        function initPuzzlesTest(scene){
             let switch1 = new Switch({
                 scene,
                 //position:BABYLON.Vector3(0, 0, 0)
@@ -24,18 +140,21 @@
 
             let light1 = new Light({
                 scene,
-                type:"light",
                 //position:BABYLON.Vector3(0, 0, 0),
                 input:wire1
             });
             wire1.output = light1;
 
 
+            switchA = switch1;
+
             switch1.flick();
             switch1.updateObjectModel();
-            document.writeln("end");
+            switch1.updateObjectView();
 
         }
+
+        initPuzzlesTest(null);
 
 
 

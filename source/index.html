@@ -8,6 +8,9 @@
         <script src="js/Arena.js"></script>
         <script src="js/Player.js"></script>
         <script src="js/Game.js"></script>
+        <script src="js/Graph.js"></script>
+        <script src="js/Puzzles.js"></script>
+        <script src="js/Misc.js"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 new Game('renderCanvas');
@@ -15,13 +18,24 @@
         </script>
 
 
-
     <div id="lcContainer">
         <ul id="listColliders">
         </ul>
     </div>
+
+
 </head>
 <body>
-    <canvas id="renderCanvas"></canvas>
+    <div style="background-color: black">
+        <canvas id="renderCanvas" style=""></canvas>
+       <div id="messages-frame">
+           <div id="messages">
+           </div>
+       </div>
+
+    </div>
 </body>
+
+
+
 </html>

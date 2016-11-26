@@ -1,14 +1,38 @@
 html, body {
-    height: 100%;
     width: 100%;
     padding: 0;
-    margin: 0;
+    margin: 0px;
+    border: 0px;
     overflow: hidden;
     position: fixed;
 }
+
 #renderCanvas {
-    position: absolute;
+    display: block;
+    left: 0px;
+    top: 0px;
     width: 100%;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
+}
+
+#messages-frame {
+    position: absolute;
+    float: none;
+    left: 0px;
+    top: 20px;
+    width: 200px;
+    max-height: 75%;
+    min-height: 100px;
+    margin: 10px;
+    background-color: black;
+    opacity: 0.5;
+    z-index: 1;
+}
+
+#messages {
+    color: white;
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: 14px;
+    margin: 5px;
 }

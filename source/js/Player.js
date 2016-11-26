@@ -144,6 +144,10 @@ class Player{
         camera.angularSensibility = this.angularSensibility;
         //camera.layerMask = 2;
 
+
+        camera.position = new BABYLON.Vector3(3, 10, -10);
+        camera.setTarget(new BABYLON.Vector3(5,0,0));
+
         return camera;
     }
 

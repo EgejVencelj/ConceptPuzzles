@@ -1,8 +1,15 @@
+"use strict";
 class ManagedElement{
 
     constructor(a) {
         Object.assign(this,a); //ha
     }
+
+    update(){
+        this.updateObjectModel();
+        this.updateObjectView();
+    }
+
 
     //fires object updating even on itself and on its children
     updateObjectModel(){
@@ -39,7 +46,7 @@ class ManagedElement{
             this.output = [this.output];
             return this.output;
         } else {
-            return null;
+            return [];
         }
     }
 }
@@ -56,28 +63,76 @@ class CircuitElement extends ManagedElement {
     set status(val){
         this._status = val;
     }
+
+    hasChanged(){
+        if(this._statusOld != status){
+            this._statusOld = status;
+            return true;
+        }
+        return false;
+    }
 }
 
 
 class Switch extends CircuitElement{
     flick(){
-        return (~this.status)&1;
+        this.status = (~this.status)&1;
     }
     onUpdateObjectModel(){
-        document.writeln("switch");
+    }
+    onUpdateObjectView(){
+        println("flicked");
+
+        if(this.hasChanged() || this.baseMesh == null){
+            if(this.baseMesh == null){
+                //let baseMesh = BABYLON.Mesh.CreateBox("box", 1.0, scene);
+                let baseMesh = BABYLON.MeshBuilder.CreateBox("box", {
+                    height:0.1,
+                    //color: rgb(100, 27, 27),
+                }, scene);
+
+                baseMesh.diffuseColor = new BABYLON.Color3(1, 0, 0); //Red
+                baseMesh.alpha = 0.3;
+
+                baseMesh.position.x = 5;
+                baseMesh.position.y = 0.05;
+
+
+                let switchMesh = BABYLON.MeshBuilder.CreateBox("box", {width:0.1, depth:0.1, height:0.7}, scene);
+                switchMesh.position.y = 0.35;
+                switchMesh.bakeCurrentTransformIntoVertices();
+
+                if(this.status == 0) {
+                    switchMesh.rotation.z = Math.PI / 6;
+                } else if(this.status == 1) {
+                    switchMesh.rotation.z = -Math.PI/6;
+                }
+
+
+                switchMesh.parent = baseMesh;
+
+                this.baseMesh = baseMesh;
+                this.switchMesh = switchMesh
+            }
+
+        }
     }
 }
 
 class Wire extends CircuitElement{
     onUpdateObjectModel(){
         this.status = this.input.status;
-        document.writeln("wire");
+    }
+    onUpdateObjectView(){
+
     }
 }
 
 class Light extends CircuitElement{
     onUpdateObjectModel(){
         this.status = this.input.status;
-        document.writeln("light");
+    }
+    onUpdateObjectView(){
+
     }
 }

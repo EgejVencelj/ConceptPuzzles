@@ -7,7 +7,6 @@ class Game{
 
         scene = this._initScene(engine);
 
-        var _this = this;
         this.loader =  new BABYLON.AssetsManager(this.scene);
 
         // An array containing the loaded assets
@@ -15,21 +14,21 @@ class Game{
 
         /*var meshTask = this.loader.addMeshTask("gun", "", "./assets/", "gun.babylon");
          meshTask.onSuccess = function(task) {
-         _this._initMesh(task);
+         this._initMesh(task);
          };*/
 
         this.loader.onFinish = function (tasks) {
 
             // Player and arena creation when the loading is finished
-            var player = new Player(_this);
-            var arena = new Arena(_this);
+            var player = new Player(this);
+            var arena = new Arena(this);
 
             engine.runRenderLoop(function () {
                 scene.render();
             });
 
             window.addEventListener("keyup", function(evt) {
-                _this.handleUserInput(evt.keyCode);
+                Game.handleUserInput(evt.keyCode);
             });
         };
 
@@ -46,18 +45,12 @@ class Game{
     _initScene(engine) {
         var scene = new BABYLON.Scene(engine);
 
-        // Camera attached to the canvas
-//        var camera = new BABYLON.ArcRotateCamera("Camera", 0, Math.PI/5, 10, BABYLON.Vector3.Zero(), scene);
-//        camera.maxZ = 1000;
-//        camera.attachControl(engine.getRenderingCanvas());
-//
-        //axis(scene, 5);
+        new axis(scene, 5);
 
 
-        // Update the scene background color
+
         scene.clearColor=new BABYLON.Color3(0.8,0.8,0.8);
 
-        // Hemispheric light to light the scene
         new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(1, 2, 1), scene);
 
         // Skydome
@@ -83,9 +76,13 @@ class Game{
         return scene;
     }
 
-    handleUserInput(keycode) {
-        console.log(keycode);
+    static handleUserInput(keycode) {
+        console.log(keycode+1000);
         switch (keycode) {
+            case 84: //t
+                switchA.flick();
+                switchA.update();
+                break;
 
         }
     }

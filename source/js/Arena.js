@@ -29,6 +29,8 @@ class Arena{
         new Box(new BABYLON.Vector3(0, 1, 0), true);
         new Box(new BABYLON.Vector3(0, 3, 0), true);
         new Box(new BABYLON.Vector3(0, 5, 0), true);
+
+        initPuzzles(scene);
     }
 
     /**
