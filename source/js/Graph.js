@@ -124,11 +124,51 @@ class Switch extends CircuitElement{
 }
 
 class Wire extends CircuitElement{
+    flick(){
+        this.status = (~this.status)&1;
+    }
     onUpdateObjectModel(){
-        this.status = this.input.status;
+        this.status = this.input;
     }
     onUpdateObjectView(){
+        if(this.hasChanged() || this.baseMesh == null){
+            if(this.baseMesh == null){
+                //let baseMesh = BABYLON.Mesh.CreateBox("box", 1.0, scene);
+                let baseMesh = BABYLON.MeshBuilder.CreateBox("box", {
+                    height:0.1,
+                    //color:
+                }, scene);
 
+                let m = new BABYLON.StandardMaterial("texture2", scene);
+                m.diffuseColor = rgb(100, 27, 27);
+
+
+                baseMesh.material = m;
+
+
+                baseMesh.position.x = 5;
+                baseMesh.position.y = 0.05;
+
+
+                let switchMesh = BABYLON.MeshBuilder.CreateBox("box", {width:0.1, depth:0.1, height:0.7}, scene);
+                switchMesh.position.y = 0.35;
+                switchMesh.bakeCurrentTransformIntoVertices();
+
+                switchMesh.parent = baseMesh;
+
+                this.baseMesh = baseMesh;
+                this.switchMesh = switchMesh
+            }
+
+            if(this.status === 0) {
+                this.switchMesh.rotation.z = Math.PI / 6;
+            } else if(this.status === 1) {
+                this.switchMesh.rotation.z = -Math.PI/6;
+            } else {
+                this.switchMesh.rotation.z = 0;
+            }
+
+        }
     }
 }
 

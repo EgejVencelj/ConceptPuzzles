@@ -13,15 +13,17 @@ class Game{
         assets = {};
 
         var teapot = this.loader.addMeshTask("bane", "", "assets/", "teapot.obj");
-        teapot.onSuccess = function(e){
+        teapot.onSuccess = (e)=>{
+            e.loadedMeshes[0].position = BABYLON.Vector3.Zero();
             console.log("success!");
         };
-        teapot.onError = function(e){
+        teapot.onError = (e)=>{
             console.log("error!");
         }
 
-        this.loader.onFinish = function (tasks) {
 
+
+        this.loader.onFinish = function (tasks) {
             // Player and arena creation when the loading is finished
             var player = new Player(this);
             var arena = new Arena(this);
