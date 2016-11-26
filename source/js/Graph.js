@@ -65,8 +65,8 @@ class CircuitElement extends ManagedElement {
     }
 
     hasChanged(){
-        if(this._statusOld != status){
-            this._statusOld = status;
+        if(this._statusOld != this.status){
+            this._statusOld = this.status;
             return true;
         }
         return false;
@@ -81,18 +81,20 @@ class Switch extends CircuitElement{
     onUpdateObjectModel(){
     }
     onUpdateObjectView(){
-        println("flicked");
-
         if(this.hasChanged() || this.baseMesh == null){
             if(this.baseMesh == null){
                 //let baseMesh = BABYLON.Mesh.CreateBox("box", 1.0, scene);
                 let baseMesh = BABYLON.MeshBuilder.CreateBox("box", {
                     height:0.1,
-                    //color: rgb(100, 27, 27),
+                    //color:
                 }, scene);
 
-                baseMesh.diffuseColor = new BABYLON.Color3(1, 0, 0); //Red
-                baseMesh.alpha = 0.3;
+                let m = new BABYLON.StandardMaterial("texture2", scene);
+                m.diffuseColor = rgb(100, 27, 27);
+
+
+                baseMesh.material = m;
+
 
                 baseMesh.position.x = 5;
                 baseMesh.position.y = 0.05;
@@ -102,18 +104,20 @@ class Switch extends CircuitElement{
                 switchMesh.position.y = 0.35;
                 switchMesh.bakeCurrentTransformIntoVertices();
 
-                if(this.status == 0) {
-                    switchMesh.rotation.z = Math.PI / 6;
-                } else if(this.status == 1) {
-                    switchMesh.rotation.z = -Math.PI/6;
-                }
-
-
                 switchMesh.parent = baseMesh;
 
                 this.baseMesh = baseMesh;
                 this.switchMesh = switchMesh
             }
+
+            if(this.status === 0) {
+                this.switchMesh.rotation.z = Math.PI / 6;
+            } else if(this.status === 1) {
+               this.switchMesh.rotation.z = -Math.PI/6;
+            } else {
+               this.switchMesh.rotation.z = 0;
+            }
+
 
         }
     }
