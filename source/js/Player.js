@@ -22,18 +22,18 @@ class Player{
         this.game = game;
 
         // The player speed
-        this.speed = 3;
+        this.speed = 10;
 
         this.walkSpeed = this.speed;
-        this.sprintSpeed = 3*this.speed;
+        this.sprintSpeed = 2*this.speed;
 
         this.enableJump = true;
         // The player inertia
-        this.inertia = 0.8;
+        this.inertia = 0;
         // The player angular inertia
-        this.angularInertia = 0.5;
+        //this.angularInertia = 0.5;
         // The mouse sensibility (lower the better sensible)
-        this.angularSensibility = 3000;
+        this.angularSensibility = 1000;
         // The player camera
         this.camera = this._initCamera();
         // The player must click on the canvas to activate control
@@ -215,7 +215,7 @@ class Player{
         var keys = [];
         keys.push({ frame: 0, value: cam.position.y });
         keys.push({ frame: 10, value: cam.position.y + 2 });
-        keys.push({ frame: 20, value: cam.position.y });
+        //keys.push({ frame: 20, value: cam.position.y });
         a.setKeys(keys);
 
         var easingFunction = new BABYLON.CircleEase();
@@ -226,6 +226,6 @@ class Player{
         cam.animations.push(a);
 
         this.setDisableJump();
-        scene.beginAnimation(cam, 0, 20, false, 1, this.setEnableJump);
+        scene.beginAnimation(cam, 0, 10, false, 1, this.setEnableJump);
     }
 }
