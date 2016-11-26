@@ -1,7 +1,7 @@
 var consoleText = [];
 
 function rgb(r,g,b){
-    return BABYLON.Color3(r/255, g/255, b/255)
+    return new BABYLON.Color3(r/255, g/255, b/255)
 }
 
 function println(text) {
