@@ -48,85 +48,100 @@ function initPuzzles(scene){
         position:new BABYLON.Vector3(sx, 0, sz)
     });
     
-    let or1 = x1.chain(
+    x2 = new Switch({
+
+        position:new BABYLON.Vector3(sx, 0, sz+2)
+    });
+    
+    x3 = new Switch({
+        scene,
+        position:new BABYLON.Vector3(sx, 0, sz+5)
+    });
+    
+    
+    let w1 = x1.chain(
         new Wire({
             position:[new BABYLON.Vector3(sx, 0, sz), new BABYLON.Vector3(sx+2, 0, sz)]})
         ).chain(
         new Wire({
             position:[new BABYLON.Vector3(sx+2, 0, 0), new BABYLON.Vector3(sx+2, 0, sz+1)]})
-        ).chain(//Tukaj je OR switch
-        new Light({
-            position:new BABYLON.Vector3(sx+2, 0, sz+1)})
         );
         
-    or1.chain(
+    let w2 = x2.chain(
         new Wire({
-            position:[new BABYLON.Vector3(sx+2, 0, sz+1), new BABYLON.Vector3(sx+6, 0, sz+1)]})
-        ).chain(//Output 1
-        new Light({
-            position:new BABYLON.Vector3(sx+6, 0, sz+1)})
-    );
-    
-    or1.chain(
-        new Wire({
-            position:[new BABYLON.Vector3(sx+4, 0, sz+1), new BABYLON.Vector3(sx+4, 0, sz+4)]})
-    );
-    
-    
-    x2 = new Switch({
-
-        position:new BABYLON.Vector3(sx, 0, sz+2)
-    });
-    let buff = x2.chain(new Wire({
             position:[new BABYLON.Vector3(sx, 0, sz+2), new BABYLON.Vector3(sx+2, 0, sz+2)]})
-        );
-    
-    buff.chain(
-        new Wire({
-            position:[new BABYLON.Vector3(sx+2, 0, sz+2), new BABYLON.Vector3(sx+2, 0, sz+1)]})
-        );
-    buff.chain(
-        new Wire({
-            position:[new BABYLON.Vector3(sx+2, 0, sz+2), new BABYLON.Vector3(sx+2, 0, sz+4)]})
-        ).chain(//Tukaj je XOR switch
-        new Light({
-            position:new BABYLON.Vector3(sx+2, 0, sz+4)})
         ).chain(
         new Wire({
-            position:[new BABYLON.Vector3(sx+2, 0, sz+4), new BABYLON.Vector3(sx+6, 0, sz+4)]})
-        ).chain(//Output 2
-        new Light({
-            position:new BABYLON.Vector3(sx+6, 0, sz+4)})
-        );
-    
-    
-    x3 = new Switch({
-        scene,
-        position:new BABYLON.Vector3(sx, 0, sz+4)
-    });
-    
-    x3.chain(
-        new Wire({scene,
-            position:[new BABYLON.Vector3(sx, 0, sz+4), new BABYLON.Vector3(sx+2, 0, sz+4)]})
-        ).chain(
-        new Wire({scene,
-            position:[new BABYLON.Vector3(sx+2, 0, sz+4), new BABYLON.Vector3(sx+2, 0, sz+4)]})    
+            position:[new BABYLON.Vector3(sx+2, 0, sz+1), new BABYLON.Vector3(sx+2, 0, sz+3)]})
         );
         
-    x3.chain(
-        new Wire({scene,
-            position:[new BABYLON.Vector3(sx+2, 0, sz+4), new BABYLON.Vector3(sx+4, 0, sz+4)]})
+    let w3a = x3.chain(
+        new Wire({
+            position:[new BABYLON.Vector3(sx, 0, sz+5), new BABYLON.Vector3(sx+4, 0, sz+5)]})
+        );
+    let w3b = x3.chain(
+        new Wire({
+            position:[new BABYLON.Vector3(sx+2, 0, sz+5), new BABYLON.Vector3(sx+2, 0, sz+3)]})
+        );
+        
+    let or1 = new Socket({
+        position:new BABYLON.Vector3(sx+2, 0, sz+1),
+    });
+    
+    x1.chain(or1, "inputA");
+    x2.chain(or1, "inputB");
+
+
+    let w4 = or1.chain(
+        new Wire({
+            position:[new BABYLON.Vector3(sx+2, 0, sz+1), new BABYLON.Vector3(sx+6, 0, sz+1)]
+        })
     ).chain(
         new Light({
-            position:new BABYLON.Vector3(sx+4, 0, sz+4)})
-    ).chain(
-        new Wire({scene,
-            position:[new BABYLON.Vector3(sx+4, 0, sz+4), new BABYLON.Vector3(sx+6, 0, sz+4)]})
-    ).chain(
-        new Light({
-            position:new BABYLON.Vector3(sx+6, 0, sz+4)})
+            position:new BABYLON.Vector3(sx+6, 0, sz+1)
+        })
     );
 
+
+    let xor1 = new Socket({
+        position:new BABYLON.Vector3(sx+2, 0, sz+3),
+    });
+    
+    x2.chain(xor1, "inputA");
+    x3.chain(xor1, "inputB");
+    
+    xor1.chain(
+        new Wire({
+            position:[new BABYLON.Vector3(sx+2, 0, sz+3), new BABYLON.Vector3(sx+6, 0, sz+3)]
+        })
+    ).chain(
+        new Light({
+            position:new BABYLON.Vector3(sx+6, 0, sz+3)
+        })
+    );
+    
+    let w5 = or1.chain(
+        new Wire({
+            position:[new BABYLON.Vector3(sx+4, 0, sz+1), new BABYLON.Vector3(sx+4, 0, sz+5)]
+        })
+    );
+    
+    let and1 = new Socket({
+        position:new BABYLON.Vector3(sx+4, 0, sz+5)
+    });
+    
+    w3a.chain(and1, "inputA");
+    w5.chain(and1, "inputB");
+    
+    and1.chain(
+        new Wire({
+            position:[new BABYLON.Vector3(sx+4, 0, sz+5), new BABYLON.Vector3(sx+6, 0, sz+5)]
+        })
+    ).chain(
+        new Light({
+            position:new BABYLON.Vector3(sx+6, 0, sz+5)
+        })
+    );
 
 
     let s = new Socket({position:new BABYLON.Vector3(4, 0, 4)});
