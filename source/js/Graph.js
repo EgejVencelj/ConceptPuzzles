@@ -255,8 +255,8 @@ class Light extends CircuitElement {
 
 
                 let light = new BABYLON.PointLight("", new BABYLON.Vector3(0, 0, 0), scene);
-                light.diffuse = rgb(254, 255, 214);
-                light.specular = rgb(254, 255, 214);
+                light.diffuse = rgb(100, 100, 100);
+                light.specular = rgb(100, 100, 100);
                 light.position.y = 0.5;
                 light.parent = baseMesh;
 
@@ -543,6 +543,7 @@ class Door extends CircuitElement {
             getCube(2, 1.5, 0.30, 0.21, 0.1, 0.4, baseMesh);
             baseMesh.position = this.position;
             this.baseMesh = baseMesh;
+            baseMesh.checkCollisions = true;
         }
 
         if (this.status == 0) {

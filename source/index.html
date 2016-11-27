@@ -17,8 +17,38 @@
                 new Game('renderCanvas');
             }, false);
         </script>
-
-
+        <!--
+        <script type="application/vertexShader" id="vertexShaderCode">
+            precision highp float;
+     
+            // Attributes
+            attribute vec3 position;
+            attribute vec2 uv;
+     
+            // Uniforms
+            uniform mat4 worldViewProjection;
+     
+            // Normal
+            varying vec2 vUV;
+     
+            void main(void) {
+            gl_Position = worldViewProjection * vec4(position, 1.0);
+     
+            vUV = uv;
+            }
+        </script>
+       
+        <script type="application/fragmentShader" id="fragmentShaderCode">
+            precision highp float;
+            varying vec2 vUV;
+     
+            uniform sampler2D textureSampler;
+     
+            void main(void) {
+            gl_FragColor = texture2D(textureSampler, vUV);
+            }
+        </script>
+        -->
     <div id="lcContainer">
         <ul id="listColliders">
         </ul>

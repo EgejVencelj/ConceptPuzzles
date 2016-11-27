@@ -11,7 +11,7 @@ class Player{
         this.height = 1;
 
         if (!spawnPoint) {
-            spawnPoint = new BABYLON.Vector3(0, 2*this.height, -10);
+            spawnPoint = new BABYLON.Vector3(1, 2*this.height, 1);
         }
 
         // The player spawnPoint
@@ -22,18 +22,13 @@ class Player{
         this.game = game;
 
         // The player speed
-        this.speed = 10;
+        this.speed = 5;
 
         this.walkSpeed = this.speed;
         this.sprintSpeed = 2*this.speed;
 
         this.enableJump = true;
-        // The player inertia
-        this.inertia = 0;
-        // The player angular inertia
-        //this.angularInertia = 0.5;
-        // The mouse sensibility (lower the better sensible)
-        this.angularSensibility = 1000;
+
         // The player camera
         this.camera = this._initCamera();
         // The player must click on the canvas to activate control
@@ -87,9 +82,9 @@ class Player{
             _this.enableJump = true;
         },
 
-            this.setDisableJump = function(){
-                _this.enableJump = false;
-            }
+        this.setDisableJump = function(){
+            _this.enableJump = false;
+        }
     }
 
     _initPointerLock() {
@@ -126,27 +121,26 @@ class Player{
     _initCamera() {
         var camera = new BABYLON.FreeCamera("camera", this.spawnPoint, scene);
         camera.attachControl(scene.getEngine().getRenderingCanvas());
-        camera.ellipsoid = new BABYLON.Vector3(1, this.height, 1);
-        camera.collisionRadius = new BABYLON.Vector3(0.5, 0.5, 0.5)
+        camera.ellipsoid = new BABYLON.Vector3(0.75, this.height, 0.75);
         camera.checkCollisions = true;
         camera.applyGravity = true;
-
-
+        
+        
         //.setPhysicsState({impostor:BABYLON.PhysicsEngine.SphereImpostor, move:true});
+        
         // WASD
-        camera.keysUp = [87]; // Z -> W
-        camera.keysDown = [83]; // S
-        camera.keysLeft = [65]; // Q -> A
-        camera.keysRight = [68]; // D
+        camera.keysUp       = [87]; // Z -> W
+        camera.keysDown     = [83]; // S
+        camera.keysLeft     = [65]; // Q -> A
+        camera.keysRight    = [68]; // D
+        
         camera.speed = this.speed;
-        camera.inertia = this.inertia;
-        camera.angularInertia = this.angularInertia;
-        camera.angularSensibility = this.angularSensibility;
-        //camera.layerMask = 2;
+        
+        camera.inertia = 0;
+        //camera.angularInertia = this.angularInertia;
+        camera.angularSensibility = 1000;
 
-
-        camera.position = new BABYLON.Vector3(3, 10, -10);
-        camera.setTarget(new BABYLON.Vector3(5,0,0));
+        camera.setTarget(new BABYLON.Vector3(2,1.5,2));
 
         return camera;
     }
@@ -165,6 +159,10 @@ class Player{
             case 32:{//space
                 this.jump();
                 break;
+            }
+            case 87:{
+                //this.camera.cameraDirection.x += 0.1;
+                //console.log(this.camera.getFrontPosition(5));
             }
         }
     }
@@ -207,15 +205,15 @@ class Player{
 
         var a = new BABYLON.Animation(
             "a",
-            "position.y", 20,
+            "position.y", 10,
             BABYLON.Animation.ANIMATIONTYPE_FLOAT,
             BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 
         // Animation keys
         var keys = [];
         keys.push({ frame: 0, value: cam.position.y });
-        keys.push({ frame: 10, value: cam.position.y + 2 });
-        //keys.push({ frame: 20, value: cam.position.y });
+        keys.push({ frame: 5, value: cam.position.y + 1 });
+        keys.push({ frame: 10, value: cam.position.y });
         a.setKeys(keys);
 
         var easingFunction = new BABYLON.CircleEase();
@@ -226,6 +224,6 @@ class Player{
         cam.animations.push(a);
 
         this.setDisableJump();
-        scene.beginAnimation(cam, 0, 10, false, 1, this.setEnableJump);
+        scene.beginAnimation(cam, 0, 10, false, 2, this.setEnableJump);
     }
 }
