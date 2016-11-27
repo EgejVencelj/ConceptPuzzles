@@ -284,6 +284,19 @@ class FireOnce {
     }
 }
 
+class FireAlways {
+    constructor(event){
+        this.event = event;
+    }
+
+    onUpdateObjectModel(){
+        this.status = this.input.status;
+        this.event(this.status);
+    }
+}
+
+
+
 class Socket extends CircuitElement{
 
     onUpdateObjectModel(){

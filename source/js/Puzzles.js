@@ -133,6 +133,10 @@ function initPuzzles(scene){
     x1.chain(s, "inputA");
     x2.chain(s, "inputB");
 
+    s.chain(new FireAlways((v)=>{
+        println("socket "+v);
+    }))
+
 
     x1.update();
     x2.update();
