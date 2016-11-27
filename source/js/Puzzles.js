@@ -70,11 +70,10 @@ function initPuzzles(scene){
     x2.chain(or1, "inputB");
 
 
+    let light1 = new Light({position:new BABYLON.Vector3(sx+6, 0, sz+1)});
     let w4 = or1.chain(
         new Wire({ position:[new BABYLON.Vector3(sx+2, 0, sz+1), new BABYLON.Vector3(sx+6, 0, sz+1)]})
-    ).chain(
-        new Light({position:new BABYLON.Vector3(sx+6, 0, sz+1)})
-    );
+    ).chain(light1);
 
 
     let xor1 = new Socket({position:new BABYLON.Vector3(sx+2, 0, sz+3)});
@@ -82,11 +81,12 @@ function initPuzzles(scene){
     
     x2.chain(xor1, "inputA");
     x3.chain(xor1, "inputB");
-    
+
+    let light2 = new Light({position:new BABYLON.Vector3(sx+6, 0, sz+3)});
     xor1.chain(
         new Wire({position:[new BABYLON.Vector3(sx+2, 0, sz+3), new BABYLON.Vector3(sx+6, 0, sz+3)]})
     ).chain(
-        new Light({position:new BABYLON.Vector3(sx+6, 0, sz+3)})
+        light2
     );
     
     let w5 = or1.chain(
@@ -98,16 +98,30 @@ function initPuzzles(scene){
     
     w3a.chain(and1, "inputA");
     w5.chain(and1, "inputB");
-    
+
+    let light3 = new Light({position:new BABYLON.Vector3(sx+6, 0, sz+5)});
     and1.chain(
         new Wire({position:[new BABYLON.Vector3(sx+4, 0, sz+5), new BABYLON.Vector3(sx+6, 0, sz+5)]})
-    ).chain(
-        new Light({position:new BABYLON.Vector3(sx+6, 0, sz+5)})
-    );
+    ).chain(light3);
 
     x1.update();
     x2.update();
     x3.update();
+
+    let m = new Multitool((a,b,c)=>{
+        return a & b & c & 1
+    });
+
+    light1.chain(m,0); //javascript :D :S :D
+    light2.chain(m,1);
+    light3.chain(m,2);
+
+
+
+    m.chain(new FireOnce(()=>{
+        println("Robot: Wow, you've solved the first puzzle. ");
+    }));
+
 
 
     /*let s = new Socket({position:new BABYLON.Vector3(4, 0, -5)});
