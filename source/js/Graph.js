@@ -35,10 +35,10 @@ function initGraphConstants(){
     lightBulbBurnerOffMaterial.diffuseColor = rgb(186, 186, 186);
 
     let chipMaterial = new BABYLON.StandardMaterial("", scene);
-    wireOnMaterial.diffuseColor = rgb(40, 40, 40);
+    chipMaterial.diffuseColor = rgb(40, 40, 40);
 
     let copper = new BABYLON.StandardMaterial("", scene);
-    wireOnMaterial.diffuseColor = rgb(233, 137, 41);
+    copper.diffuseColor = rgb(233, 137, 41);
 }
 
 
@@ -287,20 +287,38 @@ class FireOnce {
 class Socket extends CircuitElement{
 
     onUpdateObjectModel(){
-        this.status = this.input.status;
+        let A,B,C;
+        if(this.inputA == null){
+            A = 2;
+        } else {
+            A = this.inputA.status;
+        }
+        if(this.inputB == null){
+            B = 2;
+        } else {
+            B = this.inputB.status;
+        }
+
+        if(A == 2 || B == 2){
+            C = 2;
+        } else {
+            C = (A^B)&1; //xor; should be later hooked to chip object
+        }
+
+        this.status = C;1
     }
     onUpdateObjectView(){
         if(this.hasChanged() || this.baseMesh == null){
             if(this.baseMesh == null){
 
                 let baseMesh = getCube(0,0,0,1,0.1,1, null, standardBaseMaterial);
-                let baseMesh = getCube(0,0,0,1,0.1,1, null, standardBaseMaterial);
+                //let baseMesh = getCube(0,0,0,1,0.1,1, null, standardBaseMaterial);
                 //baseMesh.position.y = 0.05;
                 baseMesh.bakeCurrentTransformIntoVertices();
 
 
 
-                println("ga")
+                //println("ga")
 
 
                 baseMesh.position = this.position;
