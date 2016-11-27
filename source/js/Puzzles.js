@@ -137,6 +137,8 @@ function initPuzzles(scene){
         println("socket "+v);
     }))
 
+    s.chain( new Light({ position:new BABYLON.Vector3(4, 0, 6)}));
+
 
     x1.update();
     x2.update();
