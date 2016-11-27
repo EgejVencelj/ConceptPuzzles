@@ -157,6 +157,8 @@ class Switch extends CircuitElement {
     onUpdateObjectView() {
         if (this.hasChanged() || this.baseMesh == null) {
             if (this.baseMesh == null) {
+
+
                 let baseMesh = BABYLON.MeshBuilder.CreateBox("box", {height: 0.1}, scene);
                 baseMesh.material = standardBaseMaterial;
                 baseMesh.position.y = 0.05;
@@ -166,8 +168,13 @@ class Switch extends CircuitElement {
                 switchMesh.position.y = 0.35;
                 switchMesh.bakeCurrentTransformIntoVertices();
 
-                switchMesh.parent = baseMesh;
+                new MeshClickEvent(this, ()=>{
+                    println("event!");
+                    this.flick();
+                    this.update();
+                }).attach(switchMesh).attach(baseMesh);
 
+                switchMesh.parent = baseMesh;
                 baseMesh.position = this.position;
 
                 this.baseMesh = baseMesh;
@@ -560,5 +567,17 @@ class Door extends CircuitElement {
             }
 
         }
+    }
+}
+
+class MeshClickEvent{
+    constructor(obj, event){
+        this.click = ()=>{
+            event(obj);
+        }
+    }
+    attach(mesh){
+        mesh.meshClickEvent = this;
+        return this;
     }
 }

@@ -1,4 +1,4 @@
-class Player{
+class Player {
     /**
      * A player is represented by a box and a free camera.
      * @param scene
@@ -11,7 +11,7 @@ class Player{
         this.height = 1;
 
         if (!spawnPoint) {
-            spawnPoint = new BABYLON.Vector3(1, 2*this.height, 1);
+            spawnPoint = new BABYLON.Vector3(1, 2 * this.height, 1);
         }
 
         // The player spawnPoint
@@ -25,7 +25,7 @@ class Player{
         this.speed = 5;
 
         this.walkSpeed = this.speed;
-        this.sprintSpeed = 2*this.speed;
+        this.sprintSpeed = 2 * this.speed;
 
         this.enableJump = true;
 
@@ -52,6 +52,8 @@ class Player{
         // Event listener to go pointer lock
         this._initPointerLock();
 
+        this._initPicker();
+
         // The representation of player in the minimap
         /*var s = BABYLON.Mesh.CreateSphere("player2", 16, 4, this.scene);
          s.position.y = 10;
@@ -70,28 +72,28 @@ class Player{
         scene.activeCameras.push(this.camera);
         scene.activeCamera = this.camera;
 
-        window.addEventListener("keydown", function(evt) {
+        window.addEventListener("keydown", function (evt) {
             _this.handleKeyDown(evt.keyCode);
         });
-        window.addEventListener("keyup", function(evt) {
+        window.addEventListener("keyup", function (evt) {
             _this.handleKeyUp(evt.keyCode);
         });
 
 
-        this.setEnableJump = function(){
+        this.setEnableJump = function () {
             _this.enableJump = true;
         },
 
-        this.setDisableJump = function(){
-            _this.enableJump = false;
-        }
+            this.setDisableJump = function () {
+                _this.enableJump = false;
+            }
     }
 
     _initPointerLock() {
         var _this = this;
         // Request pointer lock
         var canvas = engine.getRenderingCanvas();
-        canvas.addEventListener("click", function(evt) {
+        canvas.addEventListener("click", function (evt) {
             canvas.requestPointerLock = canvas.requestPointerLock || canvas.msRequestPointerLock || canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock;
             if (canvas.requestPointerLock) {
                 canvas.requestPointerLock();
@@ -113,6 +115,24 @@ class Player{
         document.addEventListener("webkitpointerlockchange", pointerlockchange, false);
     }
 
+
+    _initPicker() {
+        canvas.addEventListener("click", (evt) => {
+            let width = scene.getEngine().getRenderWidth();
+            let height = scene.getEngine().getRenderHeight();
+            let info =  scene.pick(width / 2, height / 2, null, false, camera);
+
+
+            if(info.pickedMesh.meshClickEvent != null){
+                info.pickedMesh.meshClickEvent.click();
+            }
+
+
+        }, false);
+
+    }
+
+
     /**
      * Init the player camera
      * @returns {BABYLON.FreeCamera}
@@ -124,23 +144,23 @@ class Player{
         camera.ellipsoid = new BABYLON.Vector3(0.75, this.height, 0.75);
         camera.checkCollisions = true;
         camera.applyGravity = true;
-        
-        
+
+
         //.setPhysicsState({impostor:BABYLON.PhysicsEngine.SphereImpostor, move:true});
-        
+
         // WASD
-        camera.keysUp       = [87]; // Z -> W
-        camera.keysDown     = [83]; // S
-        camera.keysLeft     = [65]; // Q -> A
-        camera.keysRight    = [68]; // D
-        
+        camera.keysUp = [87]; // Z -> W
+        camera.keysDown = [83]; // S
+        camera.keysLeft = [65]; // Q -> A
+        camera.keysRight = [68]; // D
+
         camera.speed = this.speed;
-        
+
         camera.inertia = 0;
         //camera.angularInertia = this.angularInertia;
         camera.angularSensibility = 1000;
 
-        camera.setTarget(new BABYLON.Vector3(2,1.5,2));
+        camera.setTarget(new BABYLON.Vector3(2, 1.5, 2));
 
         return camera;
     }
@@ -152,15 +172,15 @@ class Player{
     handleKeyDown(keycode) {
         console.log(keycode);
         switch (keycode) {
-            case 16:{//Shift
+            case 16: {//Shift
                 this.camera.speed = this.sprintSpeed;
                 break;
             }
-            case 32:{//space
+            case 32: {//space
                 this.jump();
                 break;
             }
-            case 87:{
+            case 87: {
                 //this.camera.cameraDirection.x += 0.1;
                 //console.log(this.camera.getFrontPosition(5));
             }
@@ -173,7 +193,7 @@ class Player{
      */
     handleKeyUp(keycode) {
         switch (keycode) {
-            case 16:{//Shift
+            case 16: {//Shift
                 this.camera.speed = this.walkSpeed;
                 break;
             }
@@ -194,8 +214,8 @@ class Player{
      * Make the player jump
      *
      **/
-    jump(){
-        if(this.enableJump == false){
+    jump() {
+        if (this.enableJump == false) {
             return;
         }
 
@@ -211,9 +231,9 @@ class Player{
 
         // Animation keys
         var keys = [];
-        keys.push({ frame: 0, value: cam.position.y });
-        keys.push({ frame: 5, value: cam.position.y + 1 });
-        keys.push({ frame: 10, value: cam.position.y });
+        keys.push({frame: 0, value: cam.position.y});
+        keys.push({frame: 5, value: cam.position.y + 1});
+        keys.push({frame: 10, value: cam.position.y});
         a.setKeys(keys);
 
         var easingFunction = new BABYLON.CircleEase();
