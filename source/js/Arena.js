@@ -1,19 +1,12 @@
 class Arena{
-    /**
-     * The arena is the world where the player will evolve
-     * @param scene
-     * @constructor
-     */
+
     constructor(game){
         this.game = game;
-
-        // The arena size
         this.size = 30;
         
         let light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(1, 1, 0), scene);
         light.groundColor = BABYLON.Color3.Gray();
         light.diffuseColor = BABYLON.Color3.Gray();
-        //new BABYLON.PointLight("poinLight", new BABYLON.Vector3(this.size/2, 1, this.size/2), scene);
         
         // The ground
         var ground = BABYLON.Mesh.CreateGround("ground",  this.size,  this.size, 2, scene);
@@ -86,44 +79,22 @@ class Arena{
         
         
         
-        /*var _this = this;
+        var _this = this;
          setInterval(function() {
          var posX = _this._randomNumber(-_this.size/2, _this.size/2);
          var posZ = _this._randomNumber(-_this.size/2, _this.size/2);
-         //var t = new Target(_this.game, posX, posZ);
-         }, 1000);*/
 
-        //new Box(new BABYLON.Vector3(4, 1, 4), true);
-        //new Box(new BABYLON.Vector3(4, 3, 4), true);
-        //new Box(new BABYLON.Vector3(4, 5, 4), true);
+         }, 1000);
+
+        new Box(new BABYLON.Vector3(4, 1, 4), true);
+        new Box(new BABYLON.Vector3(4, 3, 4), true);
+        new Box(new BABYLON.Vector3(4, 5, 4), true);
         
 
-        
-        /*var robot = BABYLON.Mesh.CreateTorusKnot("mesh", 0.3, 0.05, 256, 64, 4, 10, scene);
-        robot.position.y = 5;*/
-        
-        /*var amigaMaterial = new BABYLON.ShaderMaterial("amiga", scene, {
-            vertexElement: "vertexShaderCode",
-            fragmentElement: "fragmentShaderCode",
-        },
-        {
-            attributes: ["position", "uv"],
-            uniforms: ["worldViewProjection"]
-        });
-        amigaMaterial.setTexture("textureSampler", new BABYLON.Texture("assets/sky.jpg", scene));
- 
-        robot.material = amigaMaterial;*/
-        
         initPuzzles(scene);
     }
 
-    /**
-     * Generates a random number between min and max
-     * @param min
-     * @param max
-     * @returns {number}
-     * @private
-     */
+
     _randomNumber (min, max) {
         if (min == max) {
             return (min);

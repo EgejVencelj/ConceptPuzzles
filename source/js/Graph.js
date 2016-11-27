@@ -169,7 +169,6 @@ class Switch extends CircuitElement {
                 switchMesh.bakeCurrentTransformIntoVertices();
 
                 new MeshClickEvent(this, ()=>{
-                    println("event!");
                     this.flick();
                     this.update();
                 }).attach(switchMesh).attach(baseMesh);

@@ -4,9 +4,12 @@ function rgb(r,g,b){
     return new BABYLON.Color3(r/255, g/255, b/255)
 }
 
-function println(text) {
+function println(text, color=null) {
     let noelems = 25;
 
+    if(console != null){
+        text = '<span style="color: ' + color + '">' + text + '</span>';
+    }
     consoleText.push(text);
 
     if(consoleText.length > noelems){
