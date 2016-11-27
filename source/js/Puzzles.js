@@ -145,6 +145,7 @@ function initPuzzles(scene){
 
 
     let s = new Socket({position:new BABYLON.Vector3(4, 0, 4)});
+
     x1.chain(s, "inputA");
     x2.chain(s, "inputB");
 
