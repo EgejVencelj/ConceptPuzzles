@@ -14,14 +14,14 @@ class Game{
         // An array containing the loaded assets
         assets = {};
 
-        var teapot = this.loader.addMeshTask("bane", "", "assets/", "teapot.obj");
+        /*var teapot = this.loader.addMeshTask("teapot", "", "assets/", "teapot.obj");
         teapot.onSuccess = (e)=>{
             e.loadedMeshes[0].position = BABYLON.Vector3.Zero();
             console.log("success!");
         };
         teapot.onError = (e)=>{
             console.log("error!");
-        }
+        };*/
 
 
 
@@ -86,9 +86,17 @@ class Game{
     static handleUserInput(keycode) {
         console.log(keycode+1000);
         switch (keycode) {
-            case 84: //t
-                switchA.flick();
-                switchA.update();
+            case 49: //t
+                x1.flick();
+                x1.update();
+                break;
+            case 50:
+                x2.flick();
+                x2.update();
+                break;
+            case 51:
+                x3.flick();
+                x3.update();
                 break;
 
         }
