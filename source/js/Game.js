@@ -14,14 +14,19 @@ class Game{
         // An array containing the loaded assets
         assets = {};
 
-        /*var teapot = this.loader.addMeshTask("teapot", "", "assets/", "teapot.obj");
-        teapot.onSuccess = (e)=>{
-            e.loadedMeshes[0].position = BABYLON.Vector3.Zero();
+        var robot = this.loader.addMeshTask("robot", "", "assets/", "BlackAndRedFloatingRobot.obj");
+        robot.onSuccess = (e)=>{
+            //e.loadedMeshes[0].position = BABYLON.Vector3.Zero();
+            for(var i=0; i<e.loadedMeshes.length; i++){
+                e.loadedMeshes[i].position.y += 2;
+                //e.loadedMeshes[i].specularColor = BABYLON.Color3.White();
+            }
+            
             console.log("success!");
         };
-        teapot.onError = (e)=>{
+        robot.onError = (e)=>{
             console.log("error!");
-        };*/
+        };
 
 
 

@@ -29,7 +29,24 @@ class Arena{
         new Box(new BABYLON.Vector3(0, 1, 0), true);
         new Box(new BABYLON.Vector3(0, 3, 0), true);
         new Box(new BABYLON.Vector3(0, 5, 0), true);
+        
 
+        
+        /*var robot = BABYLON.Mesh.CreateTorusKnot("mesh", 0.3, 0.05, 256, 64, 4, 10, scene);
+        robot.position.y = 5;*/
+        
+        /*var amigaMaterial = new BABYLON.ShaderMaterial("amiga", scene, {
+            vertexElement: "vertexShaderCode",
+            fragmentElement: "fragmentShaderCode",
+        },
+        {
+            attributes: ["position", "uv"],
+            uniforms: ["worldViewProjection"]
+        });
+        amigaMaterial.setTexture("textureSampler", new BABYLON.Texture("assets/sky.jpg", scene));
+ 
+        robot.material = amigaMaterial;*/
+        
         initPuzzles(scene);
     }
 
@@ -52,8 +69,8 @@ class Arena{
         var groundMat = new BABYLON.StandardMaterial(mesh.name+"mat", scene);
 
         var groundTex = new BABYLON.Texture("assets/ground.jpg", scene);
-        groundTex.uScale = 10;
-        groundTex.vScale = 10;
+        groundTex.uScale = 15;
+        groundTex.vScale = 15;
         groundMat.diffuseTexture = groundTex;
 
         if (!mesh.material) {
