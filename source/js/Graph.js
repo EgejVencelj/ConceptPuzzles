@@ -528,6 +528,7 @@ class Door extends CircuitElement {
             getCube(2, 1.5, 0.30, 0.21, 0.1, 0.4, baseMesh);
             baseMesh.position = this.position;
             this.baseMesh = baseMesh;
+            baseMesh.checkCollisions = true;
         }
 
         if (this.status == 0) {

@@ -69,8 +69,8 @@ class Arena{
         var groundMat = new BABYLON.StandardMaterial(mesh.name+"mat", scene);
 
         var groundTex = new BABYLON.Texture("assets/ground.jpg", scene);
-        groundTex.uScale = 15;
-        groundTex.vScale = 15;
+        groundTex.uScale = 40;
+        groundTex.vScale = 40;
         groundMat.diffuseTexture = groundTex;
 
         if (!mesh.material) {
