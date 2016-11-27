@@ -4,7 +4,7 @@ let standardBaseMaterial;
 
 let wireOnMaterial, wireOffMaterial, wireDisMaterial;
 let lightBulbColor, lightBulbOnMaterial, lightBulbOffMaterial, lightBulbBurnerOnMaterial, lightBulbBurnerOffMaterial;
-
+let chipMaterial, copper;
 
 function initGraphConstants(){
     standardBaseMaterial = new BABYLON.StandardMaterial("", scene);
@@ -34,6 +34,11 @@ function initGraphConstants(){
     lightBulbBurnerOffMaterial = new BABYLON.StandardMaterial("", scene);
     lightBulbBurnerOffMaterial.diffuseColor = rgb(186, 186, 186);
 
+    let chipMaterial = new BABYLON.StandardMaterial("", scene);
+    wireOnMaterial.diffuseColor = rgb(40, 40, 40);
+
+    let copper = new BABYLON.StandardMaterial("", scene);
+    wireOnMaterial.diffuseColor = rgb(233, 137, 41);
 }
 
 
@@ -133,9 +138,7 @@ class Switch extends CircuitElement{
     onUpdateObjectView(){
         if(this.hasChanged() || this.baseMesh == null){
             if(this.baseMesh == null){
-                //let baseMesh = BABYLON.Mesh.CreateBox("box", 1.0, scene);
                 let baseMesh = BABYLON.MeshBuilder.CreateBox("box", {height:0.1}, scene);
-
                 baseMesh.material = standardBaseMaterial;
                 baseMesh.position.y = 0.05;
                 baseMesh.bakeCurrentTransformIntoVertices();
@@ -265,3 +268,70 @@ class Light extends CircuitElement{
         }
     }
 }
+
+class FireOnce {
+    constructor(event){
+        this.event = event;
+        this.fired = false;
+    }
+
+    onUpdateObjectModel(){
+        this.status = this.input.status;
+        if(this.status && !this.fired){
+            this.fired = true;
+            this.event();
+        }
+    }
+}
+
+class Socket extends CircuitElement{
+
+    onUpdateObjectModel(){
+        this.status = this.input.status;
+    }
+    onUpdateObjectView(){
+        if(this.hasChanged() || this.baseMesh == null){
+            if(this.baseMesh == null){
+
+                let baseMesh = getCube(0,0,0,1,0.1,1, null, standardBaseMaterial);
+                let baseMesh = getCube(0,0,0,1,0.1,1, null, standardBaseMaterial);
+                //baseMesh.position.y = 0.05;
+                baseMesh.bakeCurrentTransformIntoVertices();
+
+
+
+                println("ga")
+
+
+                baseMesh.position = this.position;
+                this.baseMesh = baseMesh;
+
+            }
+
+            if(this.status === 0) {
+                this.baseMesh.material = wireOffMaterial;
+            } else if(this.status === 1) {
+                this.baseMesh.material = wireOnMaterial;
+            } else {
+                this.baseMesh.material = wireDisMaterial;
+            }
+
+        }
+    }
+}
+
+//box, starts at (-0.5,0,0.5)
+function getCube(x,y,z, w, h, d, parent=null, material=null){
+    let c = BABYLON.MeshBuilder.CreateBox("box", {width:w, height:h, depth:d}, scene);
+    c.position = new BABYLON.Vector3(x-0.5+w/2,y+h/2,z-0.5+d/2);
+    c.bakeCurrentTransformIntoVertices();
+    if(parent != null){
+        c.parent = parent;
+    }
+    if(material != null){
+        c.material = material;
+    }
+
+    return c;
+}
+

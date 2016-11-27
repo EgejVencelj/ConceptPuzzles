@@ -26,6 +26,11 @@ function initPuzzles(scene){
         new Light({
             scene,
             position:new BABYLON.Vector3(8, 0, -2)})
+    ).chain(
+        new Socket({
+            scene,
+            position:new BABYLON.Vector3(6, 0, 0)})
+
     );
 
 
@@ -34,7 +39,7 @@ function initPuzzles(scene){
 
     switchA = switch1;
 
-    switch1.flick();
+    //switch1.flick();
     switch1.updateObjectModel();
     switch1.updateObjectView();
 
