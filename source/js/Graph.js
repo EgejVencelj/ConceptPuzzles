@@ -34,10 +34,10 @@ function initGraphConstants(){
     lightBulbBurnerOffMaterial = new BABYLON.StandardMaterial("", scene);
     lightBulbBurnerOffMaterial.diffuseColor = rgb(186, 186, 186);
 
-    let chipMaterial = new BABYLON.StandardMaterial("", scene);
+    chipMaterial = new BABYLON.StandardMaterial("", scene);
     chipMaterial.diffuseColor = rgb(40, 40, 40);
 
-    let copper = new BABYLON.StandardMaterial("", scene);
+    copper = new BABYLON.StandardMaterial("", scene);
     copper.diffuseColor = rgb(233, 137, 41);
 }
 
@@ -324,7 +324,25 @@ class Socket extends CircuitElement{
         if(this.hasChanged() || this.baseMesh == null){
             if(this.baseMesh == null){
 
-                let baseMesh = getCube(0,0,0,1,0.1,1, null, standardBaseMaterial);
+                let a=0.1;
+                let baseMesh = getCube(0,0,0,1,a,1, null, standardBaseMaterial);
+                getCube(a,a,a,0.8,0.1,0.15, baseMesh, chipMaterial);
+                getCube(a,a,0.75,0.8,0.1,0.15, baseMesh, chipMaterial);
+                getCube(a,a,0.2,0.1,0.1,0.6, baseMesh, chipMaterial);
+                getCube(0.8,a,0.2,   0.1, 0.1,  0.6, baseMesh, chipMaterial);
+                getCube(0.2,a,0.2,   0.6, 0.01, 0.6, baseMesh, copper);
+
+
+                getCube(0.2,a,0.25, 0.6, 0.05,  0.1, baseMesh, chipMaterial);
+                getCube(0.2,a,0.65, 0.6, 0.05,  0.1, baseMesh, chipMaterial);
+                getCube(0.2,a,0.425, 0.6, 0.05,  0.15, baseMesh, chipMaterial);
+                getCube(0.2,a,0.25, 0.05, 0.05,  0.5, baseMesh, chipMaterial);
+                getCube(0.35,a,0.25, 0.1, 0.05,  0.5, baseMesh, chipMaterial);
+                getCube(0.75,a,0.25, 0.05, 0.05,  0.5, baseMesh, chipMaterial);
+                getCube(0.55,a,0.25, 0.1, 0.05,  0.5, baseMesh, chipMaterial);
+
+                //getCube(a,a,a,0.8,0.1,0.1, baseMesh, chipMaterial);
+
                 //let baseMesh = getCube(0,0,0,1,0.1,1, null, standardBaseMaterial);
                 //baseMesh.position.y = 0.05;
                 baseMesh.bakeCurrentTransformIntoVertices();
@@ -340,11 +358,11 @@ class Socket extends CircuitElement{
             }
 
             if(this.status === 0) {
-                this.baseMesh.material = wireOffMaterial;
+                //this.baseMesh.material = wireOffMaterial;
             } else if(this.status === 1) {
-                this.baseMesh.material = wireOnMaterial;
+                //this.baseMesh.material = wireOnMaterial;
             } else {
-                this.baseMesh.material = wireDisMaterial;
+                //this.baseMesh.material = wireDisMaterial;
             }
 
         }
@@ -354,7 +372,7 @@ class Socket extends CircuitElement{
 //box, starts at (-0.5,0,0.5)
 function getCube(x,y,z, w, h, d, parent=null, material=null){
     let c = BABYLON.MeshBuilder.CreateBox("box", {width:w, height:h, depth:d}, scene);
-    c.position = new BABYLON.Vector3(x-0.5+w/2,y+h/2,z-0.5+d/2);
+    c.position = new BABYLON.Vector3(x-0.5+w/2,y+h/2,-z+0.5-d/2);
     c.bakeCurrentTransformIntoVertices();
     if(parent != null){
         c.parent = parent;
