@@ -298,7 +298,7 @@ class FireOnce {
 
     onUpdateObjectModel() {
         this.status = this.input.status;
-        if (this.status && !this.fired) {
+        if (this.status == 1 && !this.fired) {
             this.fired = true;
             this.event();
         }
@@ -309,10 +309,27 @@ class FireAlways {
     constructor(event) {
         this.event = event;
     }
-
     onUpdateObjectModel() {
         this.status = this.input.status;
         this.event(this.status);
+    }
+}
+
+class Multitool extends CircuitElement {
+    constructor(event) {
+        super();
+        this.event = event;
+    }
+
+    onUpdateObjectModel() {
+        let args = [];
+        for(let i = 0; this[i] != null; i++){
+            let v = this[i].status;
+            if(v != 0 && v != 1) return;
+            args.push(v);
+        }
+
+        this.status = this.event.apply(null, args);
     }
 }
 
@@ -376,15 +393,13 @@ class Chip extends CircuitElement {
         if (this.hasChanged() || this.baseMesh == null) {
             if (this.baseMesh == null) {
 
-                let baseMesh = getCube(0.2, 0.175, 0.25, 0.6, 0.1, 0.5, null, chipMaterial);
-
-
                 let faceUV = new Array(6);
                 for (let i = 0; i < 6; i++) {
                     faceUV[i] = BABYLON.Vector4.Zero();
                 }
                 faceUV[4] = new BABYLON.Vector4(0, 0, 1, 1);
 
+                let baseMesh = getCube(0.2, 0.175, 0.25, 0.6, 0.1, 0.5, null, chipMaterial, faceUV);
                 baseMesh.material = this.Material;
 
                 getCube(0.25, 0.15, 0.35, 0.1, 0.025, 0.075, baseMesh, copper);
