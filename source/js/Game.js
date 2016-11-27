@@ -1,4 +1,4 @@
-var canvas, engine, scene, camera, assets;
+var canvas, engine, scene, camera, assets, timer;
 
 class Game{
     constructor(canvasId){
@@ -10,6 +10,8 @@ class Game{
         initGraphConstants();
 
         this.loader =  new BABYLON.AssetsManager(scene);
+
+        timer = new Timer();
 
         // An array containing the loaded assets
         assets = {};
@@ -36,6 +38,7 @@ class Game{
             var arena = new Arena(this);
 
             engine.runRenderLoop(function () {
+                timer.update();
                 scene.render();
             });
 
