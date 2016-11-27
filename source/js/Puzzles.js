@@ -32,7 +32,6 @@ function initPuzzles(scene){
     
     timer.chain(door);
     
-    
     x0.update();
     
     sx = 20;
