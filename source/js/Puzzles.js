@@ -130,6 +130,7 @@ function initPuzzles(scene){
 
 
     let s = new Socket({position:new BABYLON.Vector3(4, 0, -5)});
+    s.chain(new ChipAND({position:new BABYLON.Vector3(4, 0, -5)}));
     x1.chain(s, "inputA");
     x2.chain(s, "inputB");
 
@@ -137,8 +138,13 @@ function initPuzzles(scene){
         println("socket "+v);
     }))
 
-    s.chain( new Light({ position:new BABYLON.Vector3(4, 0, 6)}));
 
+    let d = new Door({position:new BABYLON.Vector3(2, 0, 0)});
+    s.chain(d);
+    timer.chain(d);
+
+
+    s.chain(new Light({position:new BABYLON.Vector3(4, 0, 6)}));
 
     x1.update();
     x2.update();
