@@ -1,47 +1,42 @@
 "use strict";
-var x1, x2, x3;
+var x0, x1, x2, x3;
 
 
 function initPuzzles(scene){
-   /*let switch1 = new Switch({
-        scene,
-        position:new BABYLON.Vector3(5, 0, 0)
-    });
-
-   switch1.chain(
-       new Wire({scene,
-       position:[new BABYLON.Vector3(5, 0, 0), new BABYLON.Vector3(7, 0, 1)],
-       input:switch1})
-   ).chain(
-       new Light({
-       scene,
-       position:new BABYLON.Vector3(7, 0, 1)})
-   );
-
-    switch1.chain(
-        new Wire({scene,
-            position:[new BABYLON.Vector3(5, 0, 0), new BABYLON.Vector3(8, 0, -2)],
-            input:switch1})
+    
+    let sx = 5;
+    let sz = 5;
+    
+    x0 = new Switch({position:new BABYLON.Vector3(sx, 0, sz)});
+    let door = x0.chain(
+        new Wire({
+            position:[new BABYLON.Vector3(sx, 0, sz), new BABYLON.Vector3(sx+2, 0, sz)]
+        })
     ).chain(
         new Light({
-            scene,
-            position:new BABYLON.Vector3(8, 0, -2)})
+            position:new BABYLON.Vector3(sx+2, 0, sz)
+        })
     ).chain(
-        new Socket({
-            scene,
-            position:new BABYLON.Vector3(6, 0, 0)})
-
+        new Wire({
+            position:[new BABYLON.Vector3(sx+2, 0, sz), new BABYLON.Vector3(sx+4, 0, sz)]
+        })
+    ).chain(
+        new Wire({
+            position:[new BABYLON.Vector3(sx+4, 0, sz), new BABYLON.Vector3(sx+4, 0, sz+1)]
+        })
+    ).chain(
+        new Door({
+            position:new BABYLON.Vector3(sx+4, 0, sz+1)
+        })
     );
-
-
-    switchA = switch1;
-
-    //switch1.flick();
-    switch1.updateObjectModel();
-    switch1.updateObjectView();*/
     
-    let sx = 10;
-    let sz = 0;
+    timer.chain(door);
+    
+    
+    x0.update();
+    
+    sx = 20;
+    sz = 10;
     
     x1 = new Switch({position:new BABYLON.Vector3(sx, 0, sz)});
     x2 = new Switch({position:new BABYLON.Vector3(sx, 0, sz+2)});
@@ -51,7 +46,7 @@ function initPuzzles(scene){
     let w1 = x1.chain(
         new Wire({position:[new BABYLON.Vector3(sx, 0, sz), new BABYLON.Vector3(sx+2, 0, sz)]})
         ).chain(
-        new Wire({position:[new BABYLON.Vector3(sx+2, 0, 0), new BABYLON.Vector3(sx+2, 0, sz+1)]})
+        new Wire({position:[new BABYLON.Vector3(sx+2, 0, sz), new BABYLON.Vector3(sx+2, 0, sz+1)]})
         );
         
     let w2 = x2.chain(
@@ -110,10 +105,12 @@ function initPuzzles(scene){
         new Light({position:new BABYLON.Vector3(sx+6, 0, sz+5)})
     );
 
+    x1.update();
+    x2.update();
+    x3.update();
 
 
-
-    let s = new Socket({position:new BABYLON.Vector3(4, 0, -5)});
+    /*let s = new Socket({position:new BABYLON.Vector3(4, 0, -5)});
     s.chain(new ChipAND({position:new BABYLON.Vector3(4, 0, -5)}));
 
     x1.chain(s, "inputA");
@@ -129,11 +126,9 @@ function initPuzzles(scene){
     timer.chain(d);
 
 
-    s.chain(new Light({position:new BABYLON.Vector3(4, 0, 6)}));
+    s.chain(new Light({position:new BABYLON.Vector3(4, 0, 6)}));*/
 
-    x1.update();
-    x2.update();
-    x3.update();
+
 
 
 

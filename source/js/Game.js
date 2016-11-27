@@ -21,6 +21,10 @@ class Game{
             //e.loadedMeshes[0].position = BABYLON.Vector3.Zero();
             for(var i=0; i<e.loadedMeshes.length; i++){
                 e.loadedMeshes[i].position.y += 2;
+                e.loadedMeshes[i].position.x += 15;
+                e.loadedMeshes[i].position.z += 3;
+                
+                e.loadedMeshes[i].checkCollisions = true;
                 //e.loadedMeshes[i].specularColor = BABYLON.Color3.White();
             }
             
@@ -60,13 +64,13 @@ class Game{
     _initScene(engine) {
         var scene = new BABYLON.Scene(engine);
 
-        new axis(scene, 5);
+        //new axis(scene, 5);
 
 
 
         scene.clearColor=new BABYLON.Color3(0.8,0.8,0.8);
 
-        new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(1, 2, 1), scene);
+        
 
         // Skydome
         /*var skybox = BABYLON.Mesh.CreateSphere("skyBox", 50, 1000, scene);
@@ -107,7 +111,10 @@ class Game{
                 x3.flick();
                 x3.update();
                 break;
-
+            case 70:
+                x0.flick();
+                x0.update();
+                break;
         }
     }
 

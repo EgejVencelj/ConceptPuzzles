@@ -255,8 +255,8 @@ class Light extends CircuitElement {
 
 
                 let light = new BABYLON.PointLight("", new BABYLON.Vector3(0, 0, 0), scene);
-                light.diffuse = rgb(254, 255, 214);
-                light.specular = rgb(254, 255, 214);
+                light.diffuse = rgb(100, 100, 100);
+                light.specular = rgb(100, 100, 100);
                 light.position.y = 0.5;
                 light.parent = baseMesh;
 

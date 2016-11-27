@@ -11,7 +11,7 @@ class Player{
         this.height = 1;
 
         if (!spawnPoint) {
-            spawnPoint = new BABYLON.Vector3(0, 2*this.height, -10);
+            spawnPoint = new BABYLON.Vector3(1, 2*this.height, 1);
         }
 
         // The player spawnPoint
@@ -22,7 +22,7 @@ class Player{
         this.game = game;
 
         // The player speed
-        this.speed = 10;
+        this.speed = 5;
 
         this.walkSpeed = this.speed;
         this.sprintSpeed = 2*this.speed;
@@ -121,8 +121,7 @@ class Player{
     _initCamera() {
         var camera = new BABYLON.FreeCamera("camera", this.spawnPoint, scene);
         camera.attachControl(scene.getEngine().getRenderingCanvas());
-        camera.ellipsoid = new BABYLON.Vector3(2, this.height, 1);
-        //camera.collisionRadius = new BABYLON.Vector3(0.5, 0.5, 0.5)
+        camera.ellipsoid = new BABYLON.Vector3(0.75, this.height, 0.75);
         camera.checkCollisions = true;
         camera.applyGravity = true;
         
@@ -141,9 +140,7 @@ class Player{
         //camera.angularInertia = this.angularInertia;
         camera.angularSensibility = 1000;
 
-
-        camera.position = new BABYLON.Vector3(3, 2, -10);
-        camera.setTarget(new BABYLON.Vector3(0,0,0));
+        camera.setTarget(new BABYLON.Vector3(2,1.5,2));
 
         return camera;
     }
