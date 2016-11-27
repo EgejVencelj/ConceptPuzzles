@@ -75,6 +75,9 @@ class ManagedElement {
                 element.input = this;
             }
         }
+        if((this instanceof Socket) && (element instanceof Chip)){
+            element.position = this.position;
+        }
         return element;
     }
 
@@ -453,6 +456,25 @@ class ChipAND extends Chip {
         return "AND";
     }
 }
+
+class ChipOR extends Chip {
+    get Material() {
+        let t = new BABYLON.StandardMaterial("", scene);
+        let tx = new BABYLON.Texture("assets/or.png", scene);
+        tx.wAng = Math.PI / 2;
+        t.diffuseTexture = tx;
+        return t;
+    }
+
+    Eval(A, B) {
+        return (A | B) & 1;
+    }
+
+    get Name() {
+        return "OR";
+    }
+}
+
 
 class Timer extends ManagedElement {
     onUpdateObjectModel() {
