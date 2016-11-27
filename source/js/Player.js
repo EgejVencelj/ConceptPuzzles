@@ -97,7 +97,7 @@ class Player {
         camera.inertia = 0;
               camera.angularSensibility = 1000;
 
-        camera.setTarget(new BABYLON.Vector3(2, 1.5, 2));
+        camera.setTarget(new BABYLON.Vector3(2, 1.5, 1));
 
         return camera;
     }

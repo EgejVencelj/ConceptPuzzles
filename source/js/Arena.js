@@ -86,9 +86,9 @@ class Arena{
 
          }, 1000);
 
-        new Box(new BABYLON.Vector3(4, 1, 4), true);
-        new Box(new BABYLON.Vector3(4, 3, 4), true);
-        new Box(new BABYLON.Vector3(4, 5, 4), true);
+        new Box(new BABYLON.Vector3(20, 1, 4), true);
+        new Box(new BABYLON.Vector3(20, 3, 4), true);
+        new Box(new BABYLON.Vector3(20, 5, 4), true);
         
 
         initPuzzles(scene);
